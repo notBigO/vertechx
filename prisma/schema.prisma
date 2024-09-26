@@ -2,6 +2,11 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator jsonSchema {
+  provider = "prisma-json-schema-generator"
+  includeRequiredFields = "true"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -68,7 +73,7 @@ model Event {
   title                String
   slug                 String         @unique
   description          String
-  // judgingCriteria      String?
+  judgingCriteria      String?
   rules                String?
   eventCoordinatorInfo String?
   poster_url           String?
@@ -76,9 +81,9 @@ model Event {
   time                 String?
   venue                String?
   registrationFee      Float?
-  // firstPrize           String?
-  // secondPrize          String?
-  // category             String?
+  firstPrize           String?
+  secondPrize          String?
+  category             String?
   isGroup              Boolean?       @default(false)
   minParticipants      Int?           @default(1)
   maxParticipants      Int?           @default(1)
