@@ -8,12 +8,27 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      keyframes: {
+        "shine-pulse": {
+          "0%": {
+            "background-position": "0% 0%",
+          },
+          "50%": {
+            "background-position": "100% 100%",
+          },
+          to: {
+            "background-position": "0% 0%",
+          },
+        },
+      },
       colors: {
-        background: "var(--background)",
+        background: "#0f0f0f",
+        primary: "#7c09ff",
         foreground: "var(--foreground)",
       },
     },
   },
   plugins: [],
 };
+
 export default config;
