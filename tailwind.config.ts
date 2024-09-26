@@ -23,6 +23,16 @@ const config: Config = {
         },
       },
       colors: {
+        nextadmin: {
+          background: {
+            default: "#0f0f0f",
+          },
+        },
+        "dark-nextadmin": {
+          background: {
+            default: "#0f0f0f",
+          },
+        },
         background: "#0f0f0f",
         primary: "#7c09ff",
         foreground: "var(--foreground)",

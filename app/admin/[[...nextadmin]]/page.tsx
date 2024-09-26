@@ -115,7 +115,7 @@ export default async function AdminPage({ params, searchParams }: PageProps) {
       <div className="w-screen h-screen text-2xl flex flex-col items-center justify-center text-black">
         <h1>Access Denied</h1>
         <p>You need to be an admin to access this page.</p>
-        <Link href="/" className="underline text-blue-400">
+        <Link href="/" className="underline">
           Go back to home
         </Link>
       </div>
