@@ -5,14 +5,14 @@ import TicketBarcode from "./TicketBarcode";
 const Ticket = () => {
   return (
     <>
-      <div className="w-full bg-[#7c09ff] rounded-md flex flex-col gap-4 items-start px-7 py-2 mt-4">
+      <div className="w-full h-full bg-[#7c09ff] rounded-md flex flex-col gap-4 items-start px-7 py-2 mt-4">
         <div className="w-full flex items-center justify-between mt-4 gap-3 md:gap-0">
           <h1 className="border border-[#d3baba70] p-1 rounded-xl text-xs md:text-sm">
             Order Number: <span className="font-semibold">3H31LA</span>
           </h1>
           {/* <h3 className="border border-transparent p-1">
             Event Type: <span className="font-bold">Solo</span>
-          </h3> */}
+            </h3> */}
           <h1 className="text-xs md:text-sm">
             Venue: <span className="font-bold text-md">Thikkesh Paalya</span>
           </h1>
