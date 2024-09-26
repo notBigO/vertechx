@@ -2,7 +2,7 @@ import Ticket from "@/components/Ticket";
 
 const TicketPage = () => {
   return (
-    <div className="h-screen container mx-auto flex mt-20 justify-center relative px-3 md:px-0">
+    <div className="h-screen container mx-auto flex items-center justify-center relative px-3 md:px-0">
       {/* <Image
         src={CPU}
         alt="CPU"

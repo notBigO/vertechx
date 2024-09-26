@@ -62,7 +62,7 @@ const Navbar = () => {
                 key={link.name}
                 href={link.href}
                 className="py-2 text-lg hover:text-primary transition"
-                onClick={() => setIsMenuOpen(false)} // Close menu on link click
+                onClick={() => setIsMenuOpen(false)}
               >
                 {link.name}
               </Link>
