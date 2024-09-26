@@ -3,12 +3,13 @@ import { NextAdmin, PageProps } from "@premieroctet/next-admin";
 import { getNextAdminProps } from "@premieroctet/next-admin/appRouter";
 import schema from "@/prisma/json-schema/json-schema.json";
 import "@/app/globals.css";
+import { Event, Participant, User } from "@prisma/client";
 
 export const options = {
   basePath: "/admin",
   model: {
     Event: {
-      toString: (event) => `${event.title}`,
+      toString: (event: Event) => `${event.title}`,
       title: "Event",
       edit: {
         display: [
@@ -43,12 +44,13 @@ export const options = {
       },
     },
     User: {
-      toString: (item) => item.name,
+      toString: (user: User) => user.name,
       title: "User",
     },
     Participant: {
       title: "Participants",
-      toString: (participant) => participant.name + " - " + participant.phone,
+      toString: (participant: Participant) =>
+        participant.name + " - " + participant.phone,
     },
     Registration: {
       title: "Registrations",
@@ -56,10 +58,10 @@ export const options = {
         search: ["name", "collegeName", "phone", "paymentId", "event"],
         fields: {
           event: {
-            formatter: (event) => event.title,
+            formatter: (event: Event) => event.title,
           },
           createdAt: {
-            formatter: (date) => new Date(date).toUTCString(),
+            formatter: (date: Date) => new Date(date).toUTCString(),
           },
         },
         display: [
@@ -97,6 +99,11 @@ export const options = {
 };
 
 export default async function AdminPage({ params, searchParams }: PageProps) {
+  //   console.log("Params:", params);
+  //   console.log("Search Params:", searchParams);
+  //   console.log("Options:", options);
+  //   console.log("Schema:", schema);
+
   const props = await getNextAdminProps({
     params: params.nextadmin,
     searchParams,
