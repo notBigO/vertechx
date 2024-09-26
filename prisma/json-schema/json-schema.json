@@ -110,6 +110,13 @@
             "null"
           ]
         },
+        "emailVerified": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
         "image": {
           "type": [
             "string",

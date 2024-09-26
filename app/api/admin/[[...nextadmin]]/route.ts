@@ -1,10 +1,10 @@
 import schema from "@/prisma/json-schema/json-schema.json";
-import { db } from "@/utils/db";
+import prisma from "@/utils/client";
 import { createHandler } from "@premieroctet/next-admin/appHandler";
 
 const { run } = createHandler({
   apiBasePath: "/api/admin",
-  prisma: db,
+  prisma,
   schema,
   /*options*/
 });

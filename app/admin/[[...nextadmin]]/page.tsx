@@ -1,9 +1,13 @@
-import { db } from "@/utils/db";
+import prisma from "@/utils/client";
 import { NextAdmin, PageProps } from "@premieroctet/next-admin";
 import { getNextAdminProps } from "@premieroctet/next-admin/appRouter";
 import schema from "@/prisma/json-schema/json-schema.json";
 import "@/app/globals.css";
 import { Event, Participant, User } from "@prisma/client";
+import Link from "next/link";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 export const options = {
   basePath: "/admin",
@@ -99,17 +103,31 @@ export const options = {
 };
 
 export default async function AdminPage({ params, searchParams }: PageProps) {
-  //   console.log("Params:", params);
-  //   console.log("Search Params:", searchParams);
-  //   console.log("Options:", options);
-  //   console.log("Schema:", schema);
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return redirect("/login");
+  }
+  const user = await prisma.user.findUnique({
+    where: { email: session.user?.email },
+  });
+  if (!user || !user.role || user.role !== "ADMIN") {
+    return (
+      <div className="w-screen h-screen text-2xl flex flex-col items-center justify-center text-black">
+        <h1>Access Denied</h1>
+        <p>You need to be an admin to access this page.</p>
+        <Link href="/" className="underline text-blue-400">
+          Go back to home
+        </Link>
+      </div>
+    );
+  }
 
   const props = await getNextAdminProps({
     params: params.nextadmin,
     searchParams,
     basePath: "/admin",
     apiBasePath: "/api/admin",
-    prisma: db,
+    prisma,
     schema,
     options,
   });
