@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { GeistSans } from "geist/font/sans";
 import { Space_Grotesk } from "next/font/google";
 import "./globals.css";
+import Navbar from "@/components/Navbar";
 
 export const metadata: Metadata = {
   title: "VertechX",
@@ -23,7 +24,7 @@ export default function RootLayout({
       <body
         className={`${GeistSans.className} antialiased bg-background text-white`}
       >
-        {/* <h1>Navbar</h1> */}
+        <Navbar />
         {children}
         {/* <h1>Footer</h1> */}
       </body>

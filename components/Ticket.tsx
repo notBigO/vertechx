@@ -5,26 +5,28 @@ import TicketBarcode from "./TicketBarcode";
 const Ticket = () => {
   return (
     <>
-      <div className="w-[500px w-full bg-[#7c09ff] rounded-md flex flex-col gap-4 items-start px-7 py-2 mt-4">
-        <div className="w-full flex items-center justify-between mt-4">
-          <h1 className="border border-[#9c9c9c70] p-1 rounded-xl ">
+      <div className="w-full bg-[#7c09ff] rounded-md flex flex-col gap-4 items-start px-7 py-2 mt-4">
+        <div className="w-full flex items-center justify-between mt-4 gap-3 md:gap-0">
+          <h1 className="border border-[#d3baba70] p-1 rounded-xl text-xs md:text-sm">
             Order Number: <span className="font-semibold">3H31LA</span>
           </h1>
           {/* <h3 className="border border-transparent p-1">
             Event Type: <span className="font-bold">Solo</span>
           </h3> */}
-          <h1>
-            Venue: <span className="font-bold">Thikkesh Paalya</span>
+          <h1 className="text-xs md:text-sm">
+            Venue: <span className="font-bold text-md">Thikkesh Paalya</span>
           </h1>
         </div>
         <div className="space-y-2 mt-3">
-          <h3 className={`${space.className} text-4xl font-semibold`}>
+          <h3
+            className={`${space.className} md:text-4xl text-3xl font-semibold`}
+          >
             cyberbug
           </h3>
-          <h3 className="text-lg">Debug the Code.</h3>
+          <h3 className="md:text-lg text-base">Debug the Code.</h3>
         </div>
 
-        <h1 className="mb-3 mt-4 text-sm">
+        <h1 className="mb-3 mt-4 text-xs md:text-sm">
           1 TICKET(S) x Rs.300 = <span className="font-bold">Rs.300</span>
         </h1>
       </div>
