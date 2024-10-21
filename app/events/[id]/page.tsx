@@ -50,7 +50,13 @@ const EventPage = async ({ params }: { params: any }) => {
     console.error(error);
   }
   if (!eventData) {
-    return <div>Event not found</div>;
+    return (
+      <div className="flex items-center justify-center h-screen w-screen">
+        <h1 className="text-2xl md:text-5xl">
+          Event not found. Please go back
+        </h1>
+      </div>
+    );
   }
   return (
     <main className="px-4 md:px-24 container mx-auto py-12 flex-col flex gap-6 items-center justify-center">
