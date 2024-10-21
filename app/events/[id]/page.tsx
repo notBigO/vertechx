@@ -20,7 +20,7 @@ const EventPage = () => {
           <div className="flex  flex-col basis-1/2 md:min-h-[400px] justify-between items-start">
             <div className="flex-col justify-start items-start">
               <h1
-                className={`text-4xl md:text-5xl ${space.className} text-primary`}
+                className={`text-4xl md:text-5xl ${space.className} text-primary font-bold`}
               >
                 Cyberbug - Decode the code challenge
               </h1>
