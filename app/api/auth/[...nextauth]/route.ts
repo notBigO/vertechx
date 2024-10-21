@@ -1,4 +1,4 @@
-import prisma from "@/utils/client";
+import prisma from "@/lib/client";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 
 import NextAuth, { User } from "next-auth";

@@ -5,7 +5,7 @@ import Image from "next/image";
 import MVJLogo from "@/assets/mvj.webp";
 import Logo from "@/assets/logo.png";
 import Link from "next/link";
-import { navLinks } from "@/utils/constants";
+import { navLinks } from "@/lib/constants";
 import { Button } from "./ui/button";
 import { FiMenu, FiX } from "react-icons/fi";
 
