@@ -35,6 +35,7 @@ const config: Config = {
         },
         background: "#0f0f0f",
         primary: "#7c09ff",
+        secondary: "#c04cff",
         foreground: "var(--foreground)",
       },
     },

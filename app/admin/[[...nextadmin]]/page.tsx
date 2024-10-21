@@ -1,4 +1,4 @@
-import prisma from "@/utils/client";
+import prisma from "@/lib/client";
 import { NextAdmin, PageProps } from "@premieroctet/next-admin";
 import { getNextAdminProps } from "@premieroctet/next-admin/appRouter";
 import schema from "@/prisma/json-schema/json-schema.json";

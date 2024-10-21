@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import MVJLogo from "@/assets/mvj.webp";
-import { navLinks } from "@/utils/constants";
+import { navLinks } from "@/lib/constants";
 import {
   FaFacebookF,
   FaTwitter,
