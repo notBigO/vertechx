@@ -24,9 +24,9 @@ export default function RootLayout({
       <body
         className={`${GeistSans.className} antialiased bg-background text-white`}
       >
-        {/* <Navbar /> */}
+        <Navbar />
         {children}
-        {/* <Footer /> */}
+        <Footer />
       </body>
     </html>
   );
