@@ -8,6 +8,7 @@ import Link from "next/link";
 import { navLinks } from "@/lib/constants";
 import { Button } from "./ui/button";
 import { FiMenu, FiX } from "react-icons/fi";
+import { signIn } from "next-auth/react";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -41,7 +42,9 @@ const Navbar = () => {
 
         {/* Desktop Button */}
         <div className="hidden md:flex">
-          <Button className="bg-primary">Register Now!</Button>
+          <Button className="bg-primary" onClick={() => signIn("google")}>
+            Register Now!
+          </Button>
         </div>
 
         {/* Mobile Menu Button */}
@@ -67,7 +70,12 @@ const Navbar = () => {
                 {link.name}
               </Link>
             ))}
-            <Button className="bg-primary mt-4 w-10/12">Register Now!</Button>
+            <Button
+              className="bg-primary mt-4 w-10/12"
+              onClick={() => signIn("google")}
+            >
+              Register Now!
+            </Button>
           </div>
         )}
       </div>

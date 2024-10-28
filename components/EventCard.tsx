@@ -15,7 +15,7 @@ const EventCard = ({ eventData }: { eventData: Event }) => {
   return (
     <Link
       className="bg-white rounded-xl overflow-hidden shadow-md w-72 h-96 flex flex-col"
-      href="/"
+      href={`/events/${eventData.slug}`}
     >
       <div className="w-full h-40 relative">
         <Image

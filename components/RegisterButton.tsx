@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import React from "react";
 
@@ -12,10 +14,11 @@ const RegisterButton = ({
     <Link
       prefetch={false}
       href={`/register/${slug}`}
-      className="bg-primary rounded-md p-3 text-center mt-4 w-full"
+      // className="bg-gradient-to-br from-[#a96bb4] via-[#3b5e99] to-[#405585]  rounded-md p-3 text-center mt-4 w-full"
+      className="bg-primary rounded-md p-3 text-center mt-4 w-full hover:bg-secondary transition"
     >
-      <span className="group-hover:decoration-2">REGISTER</span>
-      <span className="group-hover:decoration-2">
+      <span>Register </span>
+      <span>
         &#8377;
         {registrationFee}
       </span>
