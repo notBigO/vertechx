@@ -28,11 +28,11 @@ const RegistrationPage = async ({ params }: { params: any }) => {
     console.log(error);
   }
 
-  const qr = await upiqr({
-    payeeVPA: "EzE0046709@CUB",
-    payeeName: "THE PRINCIPAL MVJ COLLEGE",
-    amount: event.registrationFee,
-  });
+  // const qr = await upiqr({
+  //   payeeVPA: "EzE0046709@CUB",
+  //   payeeName: "THE PRINCIPAL MVJ COLLEGE",
+  //   amount: event.registrationFee,
+  // });
 
   const session = await getServerSession(authOptions);
   if (!session) {
