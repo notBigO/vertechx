@@ -4,8 +4,9 @@ import { categories } from "@/lib/constants";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import EventCard from "@/components/EventCard";
+import prisma from "@/lib/client";
 
-const EventsPage = ({ searchParams }: { searchParams: any }) => {
+const EventsPage = async ({ searchParams }: { searchParams: any }) => {
   let selectedCategory: any;
   let eventsData;
 
@@ -14,6 +15,26 @@ const EventsPage = ({ searchParams }: { searchParams: any }) => {
     redirect(`/events?category=${selectedCategory}`);
   } else if (categories.includes(searchParams.category)) {
     selectedCategory = searchParams.category;
+  }
+
+  try {
+    eventsData = await prisma.event.findMany({
+      where: {
+        category:
+          selectedCategory === "All Events" ? undefined : selectedCategory,
+      },
+    });
+    eventsData.sort((a, b) => {
+      if (a.category === "Mega Event" && b.category !== "Mega Event") {
+        return -1;
+      } else if (a.category !== "Mega Event" && b.category === "Mega Event") {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+  } catch (error) {
+    console.error(error);
   }
 
   return (
@@ -38,7 +59,14 @@ const EventsPage = ({ searchParams }: { searchParams: any }) => {
       </div>
 
       <div className="">
-        <EventCard />
+        {eventsData &&
+          eventsData.map((event) =>
+            event.category === "Mega Event" ? (
+              <div>Mega Event</div>
+            ) : (
+              <EventCard key={event.id} eventData={event} />
+            )
+          )}
       </div>
     </div>
   );

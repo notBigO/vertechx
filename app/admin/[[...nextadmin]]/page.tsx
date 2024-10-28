@@ -18,6 +18,7 @@ export const options = {
           "judgingCriteria",
           "eventCoordinatorInfo",
           "rules",
+          "poster_url",
           "firstPrize",
           "secondPrize",
           "registrationFee",

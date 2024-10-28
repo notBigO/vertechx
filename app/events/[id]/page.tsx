@@ -3,6 +3,7 @@ import Placeholder from "@/assets/placeholder.jpg";
 import { space } from "@/app/layout";
 import { Button } from "@/components/ui/button";
 import prisma from "@/lib/client";
+import RegisterButton from "@/components/RegisterButton";
 
 export async function generateMetadata({ params }: { params: any }) {
   const { id } = params;
@@ -118,11 +119,11 @@ const EventPage = async ({ params }: { params: any }) => {
                     </span>
                   </span>
                 </div>
-                {/* <RegisterButton
+                <RegisterButton
                   slug={eventData.slug}
                   registrationFee={eventData.registrationFee}
-                /> */}
-                <Button className="w-full mt-4 bg-primary">Register</Button>
+                />
+                {/* <Button className="w-full mt-4 bg-primary">Register</Button> */}
               </div>
             </div>
           </div>
@@ -132,11 +133,11 @@ const EventPage = async ({ params }: { params: any }) => {
         <h1 className={`text-5xl mt-4 ${space.className} text-primary`}>
           Event Rules
         </h1>
-        <p className="text-lg mt-5">{`${eventData.rules}`}</p>
+        <p className="text-lg mt-5 text-wrap whitespace-pre">{`${eventData.rules}`}</p>
         <h1 className={`text-5xl mt-4 ${space.className} text-primary mt-6`}>
           Judging Criteria
         </h1>
-        <p className="text-lg mt-5">{`${eventData.judgingCriteria}`}</p>
+        <p className="text-lg mt-5 text-wrap whitespace-pre">{`${eventData.judgingCriteria}`}</p>
 
         {eventData.eventCoordinatorInfo && (
           <>
@@ -145,7 +146,7 @@ const EventPage = async ({ params }: { params: any }) => {
             >
               Event Coordinators
             </h1>
-            <p className=" text-gray-300 text-lg">{`${eventData.eventCoordinatorInfo}
+            <p className=" text-gray-300 text-lg mt-5">{`${eventData.eventCoordinatorInfo}
           `}</p>
           </>
         )}
