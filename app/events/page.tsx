@@ -8,7 +8,6 @@ import prisma from "@/lib/client";
 import { unstable_cache } from "next/cache";
 import { Event } from "@prisma/client";
 
-// Cached data fetching function for events
 const getEventsData = unstable_cache(
   async (selectedCategory: string) => {
     return await prisma.event.findMany({

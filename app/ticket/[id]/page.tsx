@@ -1,33 +1,60 @@
+import { Suspense } from "react";
+import { notFound } from "next/navigation";
+import Image from "next/image";
 import Ticket from "@/components/Ticket";
 
-const TicketPage = () => {
-  return (
-    <div className="h-screen container mx-auto flex items-center justify-center relative px-3 md:px-0">
-      {/* <Image
-        src={CPU}
-        alt="CPU"
-        width={30}
-        height={30}
-        className="absolute top-10 left-10 rotate-6"
-      /> */}
+import { Skeleton } from "@/components/ui/skeleton";
+import { getRegistration } from "@/lib/registration";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
-      <div className="flex justify-start flex-col">
-        <h1 className="text-lg md:text-lg uppercase font-bold">
-          Your Ticket is <span className="text-primary">Ready</span>
+async function TicketDisplay({ registrationId }: { registrationId: string }) {
+  const registration = await getRegistration(registrationId);
+  const session = await getServerSession(authOptions);
+
+  if (!registration || registration.userId !== session?.user?.id) {
+    notFound();
+  }
+
+  return <Ticket registration={registration} />;
+}
+
+const TicketSkeleton = () => (
+  <div className="flex justify-start flex-col gap-4">
+    <Skeleton className="h-8 w-48" />
+    <Skeleton className="h-6 w-96" />
+    <Skeleton className="h-[400px] w-[512px]" />
+  </div>
+);
+
+export default async function TicketPage({
+  params: { id },
+}: {
+  params: { id: string };
+}) {
+  return (
+    <div className="min-h-screen container mx-auto flex items-center justify-center relative px-3 md:px-0">
+      <div className="flex justify-start flex-col gap-4">
+        <h1 className="text-lg md:text-xl uppercase font-bold tracking-wide">
+          Your Ticket is{" "}
+          <span className="text-primary bg-primary/10 px-2 py-1 rounded">
+            Ready
+          </span>
         </h1>
-        {/* <h3>
-          Please check back in later to review your ticket's payment
-          confirmation status.
-        </h3> */}
-        <h3 className="text-sm md:text-base">
+
+        <h3 className="text-sm md:text-base text-gray-500 dark:text-gray-400 max-w-md">
           Please make sure to get this ticket scanned at the entrance of the
           venue to check in.
         </h3>
 
-        <Ticket />
+        <Suspense fallback={<TicketSkeleton />}>
+          <TicketDisplay registrationId={id} />
+        </Suspense>
+
+        <p className="text-xs text-gray-400 dark:text-gray-500 mt-4">
+          Having issues? Contact support at support@example.com
+        </p>
       </div>
     </div>
   );
-};
-
-export default TicketPage;
+}

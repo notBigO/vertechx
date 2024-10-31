@@ -1,7 +1,18 @@
 "use client";
 
-import React from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
+import React, { useState, useEffect } from "react";
+import { useForm, useFieldArray } from "react-hook-form";
+import { Plus, Upload, X } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
 import {
   Form,
   FormControl,
@@ -10,32 +21,14 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { useController, useFieldArray, useForm } from "react-hook-form";
-import { createFormSchema } from "@/lib/formSchema";
-import { Event } from "@prisma/client";
-import { Session } from "next-auth";
-import { registrationSubmit } from "@/app/actions/registrationSubmit";
-import { Input } from "./ui/input";
-import Link from "next/link";
-import { useClientMediaQuery } from "@/lib/useClientMediaQuery";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
-const EventRegistrationForm = ({
-  event,
-  session,
-}: {
-  event: any;
-  session: Session | any;
-}) => {
-  const router = useRouter();
+const EventRegistrationForm = ({ event, session, qr }) => {
   const [status, setStatus] = useState("");
-  const [message, setMessage] = useState("");
-  const [resData, setResData] = useState({});
-  const formSchema = createFormSchema(event);
-  const isMobile = useClientMediaQuery("(max-width: 600px)");
+  const [fileName, setFileName] = useState("");
+  const [participantError, setParticipantError] = useState("");
+
   const form = useForm({
-    resolver: zodResolver(formSchema),
     defaultValues: {
       name: session?.user?.name || "",
       email: session?.user?.email || "",
@@ -43,6 +36,7 @@ const EventRegistrationForm = ({
       college: "",
       utrNumber: "",
       screenshot: null,
+      participants: event.isGroup ? [{ name: "", phone: "" }] : [],
     },
   });
 
@@ -51,392 +45,401 @@ const EventRegistrationForm = ({
     name: "participants",
   });
 
-  const registrationSubmitWithMeta = registrationSubmit.bind(null, {
-    event: event,
-    session,
-  });
-
   useEffect(() => {
-    const subscription = form.watch((value, { name, type }) =>
-      console.log(value, name, type)
-    );
-    return () => subscription.unsubscribe();
-  }, [form.watch]);
-
-  useEffect(() => {
-    if (form.formState.errors) {
-      console.log(form.formState.errors);
+    if (event.isGroup) {
+      const participantCount = fields.length;
+      if (participantCount < event.minParticipants) {
+        setParticipantError(
+          `Minimum ${event.minParticipants} participants required`
+        );
+      } else if (participantCount > event.maxParticipants) {
+        setParticipantError(
+          `Maximum ${event.maxParticipants} participants allowed`
+        );
+      } else {
+        setParticipantError("");
+      }
     }
-  }, [form.formState.errors]);
+  }, [fields, event.isGroup, event.minParticipants, event.maxParticipants]);
 
-  async function onSubmit(data: any) {
-    console.log(data);
+  const onSubmit = async (data) => {
+    if (event.isGroup) {
+      if (
+        fields.length < event.minParticipants ||
+        fields.length > event.maxParticipants
+      ) {
+        setParticipantError(
+          `Team size must be between ${event.minParticipants} and ${event.maxParticipants} members`
+        );
+        return;
+      }
+    }
+    console.log(data.screenshot);
     setStatus("loading");
 
-    console.log(data);
-    const formData = new FormData();
-    formData.append("name", data.name);
-    formData.append("email", data.email);
-    formData.append("contact", data.contact);
-    formData.append("college", data.college);
-    formData.append("utrNumber", data.utrNumber);
-    if (event.isGroup) {
-      formData.append("participants", JSON.stringify(data.participants));
-    }
-    formData.append("screenshot", data.screenshot);
+    try {
+      const formData = new FormData();
+      formData.append("name", data.name);
+      formData.append("email", data.email);
+      formData.append("phone", data.contact);
+      formData.append("collegeName", data.college);
 
-    console.log(formData);
-    const res = await registrationSubmitWithMeta(formData);
-    console.log(res);
-    if (res.message) {
-      setMessage(res.message);
-    }
-    if (res.status === "error") {
+      formData.append("noOfParticipants", event.isGroup ? fields.length : 1);
+      formData.append("utrNumber", data.utrNumber);
+      formData.append("eventId", event.id);
+
+      formData.append("screenshot", data.screenshot);
+      // formData.append("category", event.category);
+
+      if (event.isGroup) {
+        formData.append("participants", JSON.stringify(data.participants));
+      }
+
+      const response = await fetch("/api/register", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Registration failed");
+      }
+
+      const result = await response.json();
+
+      window.location.href = `/ticket/${result.registrationId}`;
+    } catch (error) {
+      console.error("Registration error:", error);
       setStatus("error");
-      setTimeout(() => {
-        router.push("/events");
-      }, 3000);
     }
-    if (res.status === "success") {
-      setStatus("success");
-      setResData(res?.data);
-    }
-  }
+  };
 
   return (
-    <Form {...form}>
-      {/* <FormSubmissionDialog isOpen={modalOpen} status={status} data={resData} /> */}
-      <form
-        action={registrationSubmit}
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="w-full"
-      >
-        <div className="w-full flex flex-col md:flex-row mt-4 gap-20 text-white">
-          {/* Left Div */}
-          <div className="basis-3/5 w-full gap-4 flex flex-col items-stretch justify-start">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    Full Name {event.isGroup && "(Group Leader)"}
-                  </FormLabel>
-                  <FormControl>
-                    <Input className="" {...field} />
-                  </FormControl>
+    <div className="min-h-screen ">
+      <div className="container mx-auto px-4 py-12 max-w-5xl">
+        <Card>
+          <CardHeader>
+            <CardTitle>Event Registration</CardTitle>
+            <CardDescription>
+              Complete the form below to register for {event.title}
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="grid grid-cols-1 lg:grid-cols-2 gap-12"
+              >
+                {/* Left Column - Personal Details */}
+                <div className="space-y-8">
+                  <div className="space-y-6">
+                    <h2 className="text-xl font-semibold">Personal Details</h2>
+                    <div className="space-y-4">
+                      <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Full Name</FormLabel>
+                            <FormControl>
+                              <Input
+                                {...field}
+                                disabled
+                                className="text-white"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
 
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input type="email" required className="" {...field} />
-                  </FormControl>
+                      <FormField
+                        control={form.control}
+                        name="email"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Email Address</FormLabel>
+                            <FormControl>
+                              <Input
+                                type="email"
+                                {...field}
+                                disabled
+                                className="text-white"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
 
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="contact"
-              render={({ field }) => (
-                <FormItem className="">
-                  <FormLabel>Contact Number (WhatsApp) </FormLabel>
-                  <FormControl>
-                    <Input type="tel" className="" {...field} />
-                  </FormControl>
+                      <FormField
+                        control={form.control}
+                        name="contact"
+                        rules={{ required: "Contact number is required" }}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Contact Number</FormLabel>
+                            <FormControl>
+                              <Input
+                                type="tel"
+                                placeholder="+91 "
+                                {...field}
+                                className="bg-white"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
 
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="college"
-              render={({ field }) => (
-                <FormItem className="">
-                  <FormLabel>College Name</FormLabel>
-                  <FormControl>
-                    <Input type="text" {...field} />
-                  </FormControl>
+                      <FormField
+                        control={form.control}
+                        name="college"
+                        rules={{ required: "College name is required" }}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>College Name</FormLabel>
+                            <FormControl>
+                              <Input
+                                placeholder="Enter your college name"
+                                {...field}
+                                className="bg-white"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  </div>
 
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            {event.isGroup && (
-              <>
-                {event.isGroup && (
-                  <>
-                    <FormLabel>
-                      Group Members (Min:{event.minParticipants} & Max:{" "}
-                      {event.maxParticipants})
-                    </FormLabel>
-                    <FormLabel>
-                      <span className="text-blue-300 text-xs">
-                        Note: Please include only group members here, excluding
-                        the Group Leader.
-                      </span>
-                    </FormLabel>
-                    {fields.map((item, index) => (
-                      <div
-                        className="flex flex-col gap-2 border border-white rounded-lg p-3 relative bg-gray-400 bg-opacity-10 backdrop-blur-lg"
-                        key={item.id}
-                      >
-                        <FormLabel className="text-lg font-bold">
-                          Participant {index + 1}
-                        </FormLabel>
-                        <FormField
-                          control={form.control}
-                          name={`participants[${index}].name`}
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Name</FormLabel>
-                              <FormControl>
-                                <Input
-                                  className=""
-                                  {...field}
-                                  placeholder={`Participant ${
-                                    index + 1
-                                  } - Name`}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        <FormField
-                          control={form.control}
-                          name={`participants[${index}].phone`}
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Contact Number (Whatsapp)</FormLabel>
-                              <FormControl>
-                                <Input
-                                  className=""
-                                  {...field}
-                                  placeholder={`Participant ${
-                                    index + 1
-                                  } - Contact Number`}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        <button
-                          type="button"
-                          className="text-rose-500 text-sm absolute top-3 right-3"
-                          onClick={() => remove(index)}
-                        >
-                          {/* <MdOutlineCancel size={28} /> */}
-                        </button>
+                  {/* Team Members Section - Only shown for group events */}
+                  {event.isGroup && (
+                    <div className="space-y-6">
+                      <div className="flex items-center justify-between">
+                        <h2 className="text-xl font-semibold">Team Members</h2>
+                        <span className="text-sm text-muted-foreground">
+                          {event.minParticipants}-{event.maxParticipants}{" "}
+                          members
+                        </span>
                       </div>
-                    ))}
-                    <button
-                      type="button"
-                      className="flex flex-row items-center justify-center gap-2 bg-gray-500 bg-opacity-50 border border-white text-gray-100 px-4 py-2 rounded-lg"
-                      onClick={() => append({ name: "", phone: "" })}
-                      disabled={
-                        fields.length >= event.maxParticipants ||
-                        status === "loading"
-                      }
-                    >
-                      {fields.length >= event.maxParticipants ? (
-                        <span>Max Participants Reached</span>
-                      ) : (
-                        <>
-                          {/* <CiCirclePlus /> */}
-                          <span>Add Participant</span>
-                        </>
+
+                      {participantError && (
+                        <Alert variant="destructive">
+                          <AlertDescription>
+                            {participantError}
+                          </AlertDescription>
+                        </Alert>
                       )}
-                    </button>
-                    <FormMessage>
-                      {console.log(form.formState.errors)}
-                      {form.formState.errors.participants &&
-                        form.formState.errors.participants.message}
-                    </FormMessage>
-                  </>
-                )}
-              </>
-            )}
-            {!event.isGroup && !isMobile && (
-              <>
-                <FormField
-                  control={form.control}
-                  name="utrNumber"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>
-                        UTR Number {`(Payment Transaction ID)`}
-                      </FormLabel>
-                      <FormControl>
-                        <Input className="w-full" {...field} />
-                      </FormControl>
 
-                      <FormMessage />
-                    </FormItem>
+                      <div className="space-y-4">
+                        {fields.map((field, index) => (
+                          <Card key={field.id}>
+                            <CardContent className="pt-6">
+                              <div className="flex justify-between items-center mb-4">
+                                <h3 className="font-medium">
+                                  Team Member {index + 1}
+                                </h3>
+                                {fields.length > event.minParticipants && (
+                                  <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    onClick={() => remove(index)}
+                                  >
+                                    <X className="h-4 w-4" />
+                                  </Button>
+                                )}
+                              </div>
+                              <div className="space-y-4">
+                                <FormField
+                                  control={form.control}
+                                  name={`participants.${index}.name`}
+                                  rules={{
+                                    required: "Member name is required",
+                                  }}
+                                  render={({ field }) => (
+                                    <FormItem>
+                                      <FormLabel>Full Name</FormLabel>
+                                      <FormControl>
+                                        <Input
+                                          placeholder="Enter member's name"
+                                          {...field}
+                                          className="bg-white"
+                                        />
+                                      </FormControl>
+                                      <FormMessage />
+                                    </FormItem>
+                                  )}
+                                />
+
+                                <FormField
+                                  control={form.control}
+                                  name={`participants.${index}.phone`}
+                                  rules={{
+                                    required: "Member contact is required",
+                                  }}
+                                  render={({ field }) => (
+                                    <FormItem>
+                                      <FormLabel>Contact Number</FormLabel>
+                                      <FormControl>
+                                        <Input
+                                          type="tel"
+                                          placeholder="+91 "
+                                          {...field}
+                                          className="bg-white"
+                                        />
+                                      </FormControl>
+                                      <FormMessage />
+                                    </FormItem>
+                                  )}
+                                />
+                              </div>
+                            </CardContent>
+                          </Card>
+                        ))}
+
+                        {fields.length < event.maxParticipants && (
+                          <Button
+                            type="button"
+                            variant="outline"
+                            className="w-full"
+                            onClick={() => append({ name: "", phone: "" })}
+                          >
+                            <Plus className="mr-2 h-4 w-4" />
+                            Add Team Member
+                          </Button>
+                        )}
+                      </div>
+                    </div>
                   )}
-                />
-                <FormField
-                  control={form.control}
-                  name="screenshot"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>
-                        Screenshot of Payment {`(Proof of Payment)`}
-                      </FormLabel>
-                      <FormControl></FormControl>
-                      <FileInput control={form.control} name="screenshot" />
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </>
-            )}
-          </div>
-          <div className="basis-2/5 w-full items-stretch flex flex-col h-fit  gap-4 md:gap-2 py-4 px-8 font-satoshi justify-start rounded-lg bg-gray-400 bg-opacity-20 backdrop-blur-sm">
-            <h2 className="text-lg font-semibold  text-center w-full  text-gray-200">
-              Payment of Registration Fee
-            </h2>
-            <p className="font-thin text-sm text-center">
-              Scan the QR to complete the payment of registration through UPI
-              fee and enter the transaction details.
-            </p>
-            <img
-              src={qr.qr}
-              alt="QR Code"
-              className="w-full rounded-lg self-center mx-auto"
-            />
+                </div>
 
-            <span className="text-xs text-center text-gray-400">
-              EzE0046709@CUB
-            </span>
+                {/* Right Column - Payment Details */}
+                <div className="space-y-8">
+                  <div className="space-y-6">
+                    <h2 className="text-xl font-semibold">Payment Details</h2>
+                    <Card>
+                      <CardContent className="pt-6 space-y-6">
+                        <div className="flex justify-center">
+                          <div className="p-3 bg-white rounded-lg shadow-sm">
+                            <img
+                              src={qr.qr}
+                              alt="Payment QR"
+                              className="w-48 h-48"
+                            />
+                          </div>
+                        </div>
 
-            <p className="text-lg text-center -mt-2 font-semibold text-purple-300">
-              &#8377;{event.registrationFee}
-            </p>
+                        <div className="text-center space-y-2">
+                          <p className="text-muted-foreground">
+                            Registration Fee
+                          </p>
+                          <p className="text-3xl font-medium">
+                            ₹{event.registrationFee}
+                          </p>
+                          <Separator className="my-4" />
+                          <div>
+                            <p className="text-sm text-muted-foreground">
+                              UPI ID
+                            </p>
+                            <p className="text-sm font-medium">
+                              EzE0046709@CUB
+                            </p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
 
-            {(event.isGroup || isMobile) && (
-              <>
-                <FormField
-                  control={form.control}
-                  name="utrNumber"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>
-                        UTR Number {`(Payment Transaction ID)`}
-                      </FormLabel>
-                      <FormControl>
-                        <Input className="w-full" {...field} />
-                      </FormControl>
+                  <div className="space-y-6">
+                    <h2 className="text-xl font-semibold">
+                      Payment Verification
+                    </h2>
+                    <div className="space-y-4">
+                      <FormField
+                        control={form.control}
+                        name="utrNumber"
+                        rules={{ required: "UTR number is required" }}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>UTR Number (Transaction ID)</FormLabel>
+                            <FormControl>
+                              <Input
+                                placeholder="Enter UTR number"
+                                {...field}
+                                className="bg-white"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
 
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="screenshot"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>
-                        Screenshot of Payment {`(Proof of Payment)`}
-                      </FormLabel>
-                      <FormControl></FormControl>
-                      <FileInput control={form.control} name="screenshot" />
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </>
-            )}
-          </div>
-        </div>
-        <p className="text-sm text-gray-400 my-6">
-          By clicking on the register button, you agree to the terms and
-          conditions of the event and adhere to the{" "}
-          <Link className="text-purple-400 font-semibold" href="/guidelines">
-            General Guidelines and Rules
-          </Link>{" "}
-          of the event.
-          <br /> Please review our{" "}
-          <Link
-            className="text-purple-400 font-semibold"
-            href="/privacy-policy"
-          >
-            Privacy Policy
-          </Link>{" "}
-          for information on how we handle your data.
-        </p>
+                      <FormField
+                        control={form.control}
+                        name="screenshot"
+                        rules={{ required: "Payment screenshot is required" }}
+                        render={({ field: { onChange, ...field } }) => (
+                          <FormItem>
+                            <FormLabel>Payment Screenshot</FormLabel>
+                            <FormControl>
+                              <div className="relative">
+                                <input
+                                  type="file"
+                                  accept="image/*"
+                                  onChange={(e) => {
+                                    const file = e.target.files?.[0];
+                                    setFileName(file?.name || "");
+                                    onChange(file);
+                                  }}
+                                  className="hidden"
+                                  id="screenshot"
+                                />
+                                <Button
+                                  asChild
+                                  variant="outline"
+                                  className="w-full"
+                                >
+                                  <label htmlFor="screenshot">
+                                    <Upload className="mr-2 h-4 w-4" />
+                                    {fileName || "Choose file"}
+                                  </label>
+                                </Button>
+                              </div>
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  </div>
+                </div>
 
-        <button
-          type="submit"
-          disabled={status === "loading" || status === "success"}
-          className="text-white w-full font-semibold text-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 rounded-lg px-5 py-3 text-center me-2 mb-2"
-        >
-          {status === "loading" ? (
-            <span className="animate-pulse">Registering...</span>
-          ) : (
-            <>
-              <span className="group-hover:decoration-2">
-                COMPLETE REGISTRATION &nbsp;
-              </span>
-            </>
-          )}
-        </button>
-      </form>
-    </Form>
-  );
-};
-
-const FileInput = ({ control, name }) => {
-  const { field } = useController({ control, name });
-  const [value, setValue] = useState("");
-  return (
-    <div className="overflow-hidden relative mt-4 mb-4">
-      <button
-        type="button"
-        className={`${
-          field.value == null
-            ? "bg-purple-500 bg-opacity-75"
-            : "bg-green-500 bg-opacity-75"
-        }  w-full flex flex-row justify-center gap-2 px-4 py-2 rounded-lg items-center border border-gray-400 text-gray-100`}
-      >
-        <svg
-          fill="#FFF"
-          height="18"
-          viewBox="0 0 24 24"
-          width="18"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path d="M0 0h24v24H0z" fill="none" />
-          <path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z" />
-        </svg>
-        <span>
-          {value.length == 0
-            ? "Upload Screenshot"
-            : `Uploaded -${field.value.name}`}
-        </span>
-      </button>
-      <input
-        className="cursor-pointer absolute top-0 z-10 block py-2 px-4 w-full opacity-0 pin-r pin-t"
-        type="file"
-        accept=".jpg, .jpeg, .png, .webp"
-        value={value}
-        onChange={(e) => {
-          setValue(e.target.value);
-          field.onChange(e.target.files[0]);
-        }}
-      />
+                {/* Submit Button */}
+                <div className="lg:col-span-2 pt-4">
+                  <Button
+                    type="submit"
+                    className="w-full bg-primary hover:bg-secondary"
+                    disabled={
+                      status === "loading" ||
+                      (event.isGroup && participantError)
+                    }
+                  >
+                    {status === "loading" ? (
+                      <>
+                        <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin mr-2" />
+                        Processing...
+                      </>
+                    ) : (
+                      "Complete Registration"
+                    )}
+                  </Button>
+                </div>
+              </form>
+            </Form>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 };
