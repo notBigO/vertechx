@@ -48,11 +48,11 @@ const EventsPage = async ({ searchParams }: { searchParams: any }) => {
 
   return (
     <div
-      className={`${space.className} flex flex-col h-screen w-screen items-center mt-16 text-4xl text-primary`}
+      className={`${space.className} flex flex-col h-screen w-full items-center mt-16 text-4xl text-primary`}
     >
       <h1>Explore Events</h1>
 
-      <div className="mt-7 flex flex-row w-screen px-4 py-2 justify-start md:justify-center flex-nowrap overflow-x-scroll md:overflow-x-hidden">
+      <div className="mt-7 flex flex-row w-screen px-4 py-2 justify-start md:justify-center flex-nowrap overflow-x-scroll md:overflow-x-hidden scrollbar-hidden">
         {categories.map((category) => (
           <Link
             href={`/events?category=${category}`}

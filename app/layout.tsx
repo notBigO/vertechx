@@ -4,7 +4,8 @@ import { Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Toaster } from "@/components/ui/toaster";
+import ProgressBar from "@/components/Progressbar";
+import AuthProvider from "@/components/AuthProvider";
 
 export const metadata: Metadata = {
   title: "VertechX",
@@ -25,10 +26,13 @@ export default function RootLayout({
       <body
         className={`${GeistSans.className} antialiased bg-background text-white`}
       >
-        <Navbar />
-        {children}
-        {/* <Toaster /> */}
-        <Footer />
+        <AuthProvider>
+          <ProgressBar />
+          <Navbar />
+          {children}
+
+          <Footer />
+        </AuthProvider>
       </body>
     </html>
   );
