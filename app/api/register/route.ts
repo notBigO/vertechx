@@ -97,7 +97,6 @@ export async function POST(req) {
       }
     }
 
-    // Create registration
     const registration = await prisma.registration.create({
       data: {
         name,
