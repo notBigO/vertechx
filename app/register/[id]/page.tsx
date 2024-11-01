@@ -22,6 +22,8 @@ const getEventData = unstable_cache(
           description: true,
           poster_url: true,
           category: true,
+          minParticipants: true,
+          maxParticipants: true,
           time: true,
           venue: true,
           firstPrize: true,
@@ -43,12 +45,12 @@ const getEventData = unstable_cache(
       console.error("Error fetching event:", error);
       throw new Error("Failed to fetch event data");
     }
-  },
-  ["event-data"],
-  {
-    revalidate: 60,
-    tags: ["event-data"],
   }
+  // ["event-data"],
+  // {
+  //   revalidate: 60,
+  //   tags: ["event-data"],
+  // }
 );
 
 const RegistrationPage = async ({ params }: { params: any }) => {

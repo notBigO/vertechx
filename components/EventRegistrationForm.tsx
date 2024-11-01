@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useForm, useFieldArray } from "react-hook-form";
 import { Plus, Upload, X } from "lucide-react";
 import {
   Card,
@@ -22,13 +21,16 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useForm, useFieldArray } from "react-hook-form";
+import { Event } from "@prisma/client";
 
-const EventRegistrationForm = ({ event, session, qr }) => {
+const EventRegistrationForm = ({ event, session, qr }: { event: Event }) => {
   const [status, setStatus] = useState("");
   const [fileName, setFileName] = useState("");
   const [participantError, setParticipantError] = useState("");
 
   const form = useForm({
+    mode: "onChange",
     defaultValues: {
       name: session?.user?.name || "",
       email: session?.user?.email || "",
@@ -36,7 +38,9 @@ const EventRegistrationForm = ({ event, session, qr }) => {
       college: "",
       utrNumber: "",
       screenshot: null,
-      participants: event.isGroup ? [{ name: "", phone: "" }] : [],
+      participants: event.isGroup
+        ? Array(event.minParticipants).fill({ name: "", phone: "" })
+        : [],
     },
   });
 
@@ -45,36 +49,57 @@ const EventRegistrationForm = ({ event, session, qr }) => {
     name: "participants",
   });
 
+  const validateParticipants = () => {
+    if (!event.isGroup) return "";
+
+    if (fields.length < event.minParticipants) {
+      return `Minimum ${event.minParticipants} participants required`;
+    }
+    if (fields.length > event.maxParticipants) {
+      return `Maximum ${event.maxParticipants} participants allowed`;
+    }
+
+    const participantValues = form.getValues("participants");
+
+    const emptyFields = participantValues.some(
+      (field) => !field?.name?.trim() || !field?.phone?.trim()
+    );
+    if (emptyFields) {
+      return "All participant details must be filled";
+    }
+
+    const invalidPhone = participantValues.some(
+      (field) => !/^[0-9]{10}$/.test(field.phone)
+    );
+    if (invalidPhone) {
+      return "All contact numbers must be 10 digits";
+    }
+
+    return "";
+  };
+
   useEffect(() => {
     if (event.isGroup) {
-      const participantCount = fields.length;
-      if (participantCount < event.minParticipants) {
-        setParticipantError(
-          `Minimum ${event.minParticipants} participants required`
-        );
-      } else if (participantCount > event.maxParticipants) {
-        setParticipantError(
-          `Maximum ${event.maxParticipants} participants allowed`
-        );
-      } else {
-        setParticipantError("");
-      }
+      const error = validateParticipants();
+      setParticipantError(error);
     }
-  }, [fields, event.isGroup, event.minParticipants, event.maxParticipants]);
+  }, [
+    form.watch("participants"),
+    fields.length,
+    event.isGroup,
+    event.minParticipants,
+    event.maxParticipants,
+  ]);
 
   const onSubmit = async (data) => {
     if (event.isGroup) {
-      if (
-        fields.length < event.minParticipants ||
-        fields.length > event.maxParticipants
-      ) {
-        setParticipantError(
-          `Team size must be between ${event.minParticipants} and ${event.maxParticipants} members`
-        );
+      const error = validateParticipants();
+      if (error) {
+        setParticipantError(error);
         return;
       }
     }
-    console.log(data.screenshot);
+
     setStatus("loading");
 
     try {
@@ -83,13 +108,10 @@ const EventRegistrationForm = ({ event, session, qr }) => {
       formData.append("email", data.email);
       formData.append("phone", data.contact);
       formData.append("collegeName", data.college);
-
       formData.append("noOfParticipants", event.isGroup ? fields.length : 1);
       formData.append("utrNumber", data.utrNumber);
       formData.append("eventId", event.id);
-
       formData.append("screenshot", data.screenshot);
-      // formData.append("category", event.category);
 
       if (event.isGroup) {
         formData.append("participants", JSON.stringify(data.participants));
@@ -106,7 +128,6 @@ const EventRegistrationForm = ({ event, session, qr }) => {
       }
 
       const result = await response.json();
-
       window.location.href = `/ticket/${result.registrationId}`;
     } catch (error) {
       console.error("Registration error:", error);
@@ -115,11 +136,13 @@ const EventRegistrationForm = ({ event, session, qr }) => {
   };
 
   return (
-    <div className="min-h-screen ">
+    <div className="min-h-screen bg-dark">
       <div className="container mx-auto px-4 py-12 max-w-5xl">
-        <Card>
-          <CardHeader>
-            <CardTitle>Event Registration</CardTitle>
+        <Card className="shadow-lg">
+          <CardHeader className="space-y-1">
+            <CardTitle className="text-2xl font-bold">
+              Event Registration
+            </CardTitle>
             <CardDescription>
               Complete the form below to register for {event.title}
             </CardDescription>
@@ -130,10 +153,13 @@ const EventRegistrationForm = ({ event, session, qr }) => {
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="grid grid-cols-1 lg:grid-cols-2 gap-12"
               >
-                {/* Left Column - Personal Details */}
+                {/* Left Column - Personal Details & Team Members */}
                 <div className="space-y-8">
+                  {/* Personal Details Section */}
                   <div className="space-y-6">
-                    <h2 className="text-xl font-semibold">Personal Details</h2>
+                    <h2 className="text-xl font-semibold text-gray-900">
+                      Personal Details
+                    </h2>
                     <div className="space-y-4">
                       <FormField
                         control={form.control}
@@ -145,7 +171,7 @@ const EventRegistrationForm = ({ event, session, qr }) => {
                               <Input
                                 {...field}
                                 disabled
-                                className="text-white"
+                                className="bg-gray-100"
                               />
                             </FormControl>
                             <FormMessage />
@@ -164,7 +190,7 @@ const EventRegistrationForm = ({ event, session, qr }) => {
                                 type="email"
                                 {...field}
                                 disabled
-                                className="text-white"
+                                className="bg-gray-100"
                               />
                             </FormControl>
                             <FormMessage />
@@ -175,7 +201,14 @@ const EventRegistrationForm = ({ event, session, qr }) => {
                       <FormField
                         control={form.control}
                         name="contact"
-                        rules={{ required: "Contact number is required" }}
+                        rules={{
+                          required: "Contact number is required",
+                          pattern: {
+                            value: /^[0-9]{10}$/,
+                            message:
+                              "Please enter a valid 10-digit phone number",
+                          },
+                        }}
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>Contact Number</FormLabel>
@@ -213,14 +246,16 @@ const EventRegistrationForm = ({ event, session, qr }) => {
                     </div>
                   </div>
 
-                  {/* Team Members Section - Only shown for group events */}
+                  {/* Team Members Section */}
                   {event.isGroup && (
                     <div className="space-y-6">
                       <div className="flex items-center justify-between">
-                        <h2 className="text-xl font-semibold">Team Members</h2>
-                        <span className="text-sm text-muted-foreground">
+                        <h2 className="text-xl font-semibold text-gray-900">
+                          Team Members
+                        </h2>
+                        <span className="text-sm text-gray-500">
                           {event.minParticipants}-{event.maxParticipants}{" "}
-                          members
+                          members required
                         </span>
                       </div>
 
@@ -234,17 +269,22 @@ const EventRegistrationForm = ({ event, session, qr }) => {
 
                       <div className="space-y-4">
                         {fields.map((field, index) => (
-                          <Card key={field.id}>
+                          <Card
+                            key={field.id}
+                            className="border border-gray-200"
+                          >
                             <CardContent className="pt-6">
                               <div className="flex justify-between items-center mb-4">
-                                <h3 className="font-medium">
+                                <h3 className="font-medium text-gray-900">
                                   Team Member {index + 1}
                                 </h3>
                                 {fields.length > event.minParticipants && (
                                   <Button
+                                    type="button"
                                     variant="ghost"
                                     size="icon"
                                     onClick={() => remove(index)}
+                                    className="text-gray-500 hover:text-red-500"
                                   >
                                     <X className="h-4 w-4" />
                                   </Button>
@@ -277,6 +317,11 @@ const EventRegistrationForm = ({ event, session, qr }) => {
                                   name={`participants.${index}.phone`}
                                   rules={{
                                     required: "Member contact is required",
+                                    pattern: {
+                                      value: /^[0-9]{10}$/,
+                                      message:
+                                        "Please enter a valid 10-digit phone number",
+                                    },
                                   }}
                                   render={({ field }) => (
                                     <FormItem>
@@ -316,34 +361,33 @@ const EventRegistrationForm = ({ event, session, qr }) => {
 
                 {/* Right Column - Payment Details */}
                 <div className="space-y-8">
+                  {/* Payment Information */}
                   <div className="space-y-6">
-                    <h2 className="text-xl font-semibold">Payment Details</h2>
-                    <Card>
+                    <h2 className="text-xl font-semibold text-gray-900">
+                      Payment Details
+                    </h2>
+                    <Card className="border border-gray-200">
                       <CardContent className="pt-6 space-y-6">
                         <div className="flex justify-center">
                           <div className="p-3 bg-white rounded-lg shadow-sm">
                             <img
                               src={qr.qr}
-                              alt="Payment QR"
-                              className="w-48 h-48"
+                              alt="Payment QR Code"
+                              className="w-48 h-48 object-contain"
                             />
                           </div>
                         </div>
 
                         <div className="text-center space-y-2">
-                          <p className="text-muted-foreground">
-                            Registration Fee
-                          </p>
-                          <p className="text-3xl font-medium">
+                          <p className="text-gray-500">Registration Fee</p>
+                          <p className="text-3xl font-medium text-gray-900">
                             ₹{event.registrationFee}
                           </p>
                           <Separator className="my-4" />
                           <div>
-                            <p className="text-sm text-muted-foreground">
-                              UPI ID
-                            </p>
-                            <p className="text-sm font-medium">
-                              EzE0046709@CUB
+                            <p className="text-sm text-gray-500">UPI ID</p>
+                            <p className="text-sm font-medium text-gray-900">
+                              {qr.upiId || "EzE0046709@CUB"}
                             </p>
                           </div>
                         </div>
@@ -351,15 +395,22 @@ const EventRegistrationForm = ({ event, session, qr }) => {
                     </Card>
                   </div>
 
+                  {/* Payment Verification */}
                   <div className="space-y-6">
-                    <h2 className="text-xl font-semibold">
+                    <h2 className="text-xl font-semibold text-gray-900">
                       Payment Verification
                     </h2>
                     <div className="space-y-4">
                       <FormField
                         control={form.control}
                         name="utrNumber"
-                        rules={{ required: "UTR number is required" }}
+                        rules={{
+                          required: "UTR number is required",
+                          minLength: {
+                            value: 8,
+                            message: "UTR number must be at least 8 characters",
+                          },
+                        }}
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>UTR Number (Transaction ID)</FormLabel>
@@ -378,8 +429,31 @@ const EventRegistrationForm = ({ event, session, qr }) => {
                       <FormField
                         control={form.control}
                         name="screenshot"
-                        rules={{ required: "Payment screenshot is required" }}
-                        render={({ field: { onChange, ...field } }) => (
+                        rules={{
+                          required: "Payment screenshot is required",
+                          validate: {
+                            fileType: (value) => {
+                              if (!value) return true;
+                              const acceptedTypes = [
+                                "image/jpeg",
+                                "image/png",
+                                "image/jpg",
+                              ];
+                              return (
+                                acceptedTypes.includes(value.type) ||
+                                "Please upload a valid image file (JPG, PNG)"
+                              );
+                            },
+                            fileSize: (value) => {
+                              if (!value) return true;
+                              return (
+                                value.size <= 5000000 ||
+                                "File size must be less than 5MB"
+                              );
+                            },
+                          },
+                        }}
+                        render={({ field: { onChange, value, ...field } }) => (
                           <FormItem>
                             <FormLabel>Payment Screenshot</FormLabel>
                             <FormControl>
@@ -394,15 +468,19 @@ const EventRegistrationForm = ({ event, session, qr }) => {
                                   }}
                                   className="hidden"
                                   id="screenshot"
+                                  {...field}
                                 />
                                 <Button
                                   asChild
                                   variant="outline"
                                   className="w-full"
                                 >
-                                  <label htmlFor="screenshot">
+                                  <label
+                                    htmlFor="screenshot"
+                                    className="cursor-pointer"
+                                  >
                                     <Upload className="mr-2 h-4 w-4" />
-                                    {fileName || "Choose file"}
+                                    {fileName || "Choose screenshot"}
                                   </label>
                                 </Button>
                               </div>
@@ -420,10 +498,10 @@ const EventRegistrationForm = ({ event, session, qr }) => {
                   <Button
                     type="submit"
                     className="w-full bg-primary hover:bg-secondary"
-                    disabled={
-                      status === "loading" ||
-                      (event.isGroup && participantError)
-                    }
+                    // disabled={
+                    //   status === "loading" ||
+                    //   (event.isGroup && !!participantError)
+                    // }
                   >
                     {status === "loading" ? (
                       <>
