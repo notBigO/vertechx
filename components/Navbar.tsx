@@ -22,8 +22,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { data: session } = useSession();
-  console.log(session);
-  // Function to get initials from name
+  // console.log(session);
+
   const getInitials = (name) => {
     if (!name) return "UN";
     return name
