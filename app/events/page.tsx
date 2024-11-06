@@ -94,6 +94,7 @@ const EventsPage = async ({ searchParams }: { searchParams: any }) => {
           className="
             w-full 
             px-4 
+            py-7
             grid 
             grid-cols-1 
             sm:grid-cols-2 
