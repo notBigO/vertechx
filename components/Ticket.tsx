@@ -47,7 +47,7 @@ export default function Ticket({
           <div className="flex-1 p-6 border-r border-gray-200">
             <div className="flex justify-between items-start mb-6">
               <div>
-                <h2 className="text-sm text-gray-500 mb-1">Event Ticket</h2>
+                <h2 className="text-sm text-white mb-1">Event Ticket</h2>
                 <CardTitle className={`text-xl text-primary`}>
                   {registration.event.title}
                 </CardTitle>
@@ -67,7 +67,7 @@ export default function Ticket({
             {/* Event Details Grid */}
             <div className="grid grid-cols-2 gap-x-8 gap-y-4">
               <div className="space-y-1">
-                <p className="text-xs text-white">Date</p>
+                <p className="text-xs text-primary">Date</p>
                 {/* <p className="text-xs text-gray-500">Date</p> */}
                 <p className="text-sm text-white">
                   {formatDate(registration.event.date)}
@@ -77,7 +77,7 @@ export default function Ticket({
                 </p> */}
               </div>
               <div className="space-y-1">
-                <p className="text-xs text-white">Time</p>
+                <p className="text-xs text-primary">Time</p>
                 {/* <p className="text-xs text-gray-500">Time</p> */}
                 <p className="text-sm text-white">
                   {formatTime(registration.event.date)}
@@ -87,13 +87,13 @@ export default function Ticket({
                 </p> */}
               </div>
               <div className="space-y-1">
-                <p className="text-xs text-white">Location</p>
+                <p className="text-xs text-primary">Location</p>
                 {/* <p className="text-xs text-gray-500">Location</p> */}
                 <p className="text-sm text-white">Main Venue</p>
                 {/* <p className="text-sm text-gray-900">Main Venue</p> */}
               </div>
               <div className="space-y-1">
-                <p className="text-xs text-white">Section</p>
+                <p className="text-xs text-primary">Section</p>
                 {/* <p className="text-xs text-gray-500">Section</p> */}
                 <p className="text-sm text-white">A1</p>
                 {/* <p className="text-sm text-gray-900">A1</p> */}
@@ -107,7 +107,7 @@ export default function Ticket({
                 {registration.participants.map((participant: any) => (
                   <div
                     key={participant.id}
-                    className="flex items-center justify-between p-2 rounded bg-background hover:bg-purple-600 transition-colors"
+                    className="flex items-center justify-between p-2 rounded bg-background "
                   >
                     <span className="text-sm text-white">
                       {participant.name}
@@ -132,7 +132,7 @@ export default function Ticket({
                 size={140}
               />
             </div>
-            <p className="text-xs text-purple-600 mb-2">
+            <p className="text-xs text-primary mb-2">
               Ticket ID: {registration.id.slice(0, 8).toUpperCase()}
             </p>
           </div>

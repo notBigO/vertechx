@@ -28,7 +28,6 @@ const NavbarClient = ({ initialSession }: NavbarClientProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { data: sessionData } = useSession();
 
-  // Use the initial session from SSR, falling back to client-side session
   const session = sessionData ?? initialSession;
 
   const getInitials = (name?: string | null) => {
