@@ -33,7 +33,7 @@ export default async function TicketPage({
   params: { id: string };
 }) {
   return (
-    <div className="min-h-screen container mx-auto flex items-center justify-center relative px-3 md:px-0 py-10 md:py-0">
+    <div className="min-h-screen container mx-auto flex items-center justify-center relative px-3 md:px-0 py-10 lg:py-0">
       <div className="flex justify-start flex-col gap-4">
         <h1 className="text-lg md:text-xl uppercase font-bold tracking-wide">
           Your Ticket is{" "}

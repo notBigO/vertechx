@@ -22,7 +22,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { data: session } = useSession();
-  // console.log(session);
 
   const getInitials = (name) => {
     if (!name) return "UN";
@@ -77,7 +76,7 @@ const Navbar = () => {
               <DropdownMenuTrigger asChild>
                 <Avatar className="cursor-pointer hover:ring-2 hover:ring-primary transition-all w-10 h-10">
                   <AvatarImage
-                    src={session.user?.image || undefined}
+                    src={session?.user?.image}
                     alt={session.user?.name || "User Avatar"}
                     className="object-cover"
                   />
@@ -119,7 +118,7 @@ const Navbar = () => {
               onClick={() => setIsMenuOpen((prev) => !prev)}
             >
               <AvatarImage
-                src={session.user?.image || undefined}
+                src={session.user?.image}
                 alt={session.user?.name || "User Avatar"}
                 className="object-cover"
               />
