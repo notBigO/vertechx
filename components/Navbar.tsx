@@ -102,7 +102,10 @@ const Navbar = () => {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <Button className="bg-primary" onClick={() => signIn("google")}>
+            <Button
+              className="bg-primary hover:bg-secondary"
+              onClick={() => signIn("google")}
+            >
               Register Now!
             </Button>
           )}
@@ -177,7 +180,7 @@ const Navbar = () => {
               </Button>
             ) : (
               <Button
-                className="bg-primary mt-4 w-full"
+                className="bg-primary mt-4 w-full hover:bg-secondary"
                 onClick={() => signIn("google")}
               >
                 Register Now!

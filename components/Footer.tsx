@@ -87,7 +87,7 @@ const Footer = () => {
         </div>
 
         {/* Newsletter Subscription */}
-        <div className="flex flex-col gap-2 max-w-xs">
+        {/* <div className="flex flex-col gap-2 max-w-xs">
           <h4 className="text-lg font-semibold text-primary">Stay Updated</h4>
           <p className="text-sm text-gray-400">
             Subscribe to our newsletter to get the latest updates about the
@@ -106,7 +106,7 @@ const Footer = () => {
               Subscribe
             </Button>
           </form>
-        </div>
+        </div> */}
       </div>
 
       {/* Footer Bottom */}

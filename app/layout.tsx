@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { GeistSans } from "geist/font/sans";
-import { Space_Grotesk } from "next/font/google";
+import { Space_Grotesk, Birthstone } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -16,6 +16,11 @@ export const display = localFont({
   src: "../assets/fonts/Thunder-VF.ttf",
   variable: "--font-display",
   display: "swap",
+});
+
+export const hero = Birthstone({
+  weight: ["400"],
+  subsets: ["latin"],
 });
 
 export const space = Space_Grotesk({
