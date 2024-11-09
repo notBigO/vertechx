@@ -27,7 +27,6 @@ interface NavbarClientProps {
 const NavbarClient = ({ initialSession }: NavbarClientProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { data: sessionData } = useSession();
-
   const session = sessionData ?? initialSession;
 
   const getInitials = (name?: string | null) => {
@@ -52,6 +51,7 @@ const NavbarClient = ({ initialSession }: NavbarClientProps) => {
               width={80}
               height={50}
               className="object-contain"
+              priority
             />
             <Image
               src={Logo}
@@ -59,6 +59,7 @@ const NavbarClient = ({ initialSession }: NavbarClientProps) => {
               width={100}
               height={50}
               className="object-contain ml-4"
+              priority
             />
           </Link>
         </div>
@@ -83,9 +84,9 @@ const NavbarClient = ({ initialSession }: NavbarClientProps) => {
               <DropdownMenuTrigger asChild>
                 <Avatar className="cursor-pointer hover:ring-2 hover:ring-primary transition-all w-10 h-10">
                   <AvatarImage
-                    src={session.user?.image ?? undefined}
+                    src={session.user?.image || undefined}
+                    referrerPolicy="no-referrer"
                     alt={session.user?.name || "User Avatar"}
-                    className="object-cover"
                   />
                   <AvatarFallback>
                     {getInitials(session.user?.name)}
@@ -125,9 +126,9 @@ const NavbarClient = ({ initialSession }: NavbarClientProps) => {
               onClick={() => setIsMenuOpen((prev) => !prev)}
             >
               <AvatarImage
-                src={session.user?.image ?? undefined}
+                src={session.user?.image || undefined}
+                referrerPolicy="no-referrer"
                 alt={session.user?.name || "User Avatar"}
-                className="object-cover"
               />
               <AvatarFallback>{getInitials(session.user?.name)}</AvatarFallback>
             </Avatar>
@@ -147,9 +148,9 @@ const NavbarClient = ({ initialSession }: NavbarClientProps) => {
               <div className="flex flex-col items-center mb-4">
                 <Avatar className="w-16 h-16 mb-2">
                   <AvatarImage
-                    src={session.user?.image ?? undefined}
+                    src={session.user?.image || undefined}
+                    referrerPolicy="no-referrer"
                     alt={session.user?.name || "User Avatar"}
-                    className="object-cover"
                   />
                   <AvatarFallback className="text-2xl">
                     {getInitials(session.user?.name)}
