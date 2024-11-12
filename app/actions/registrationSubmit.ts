@@ -57,8 +57,12 @@ export async function registrationSubmit(metadata: any, data: any) {
   }
 
   try {
+    const formData = Object.fromEntries(data);
+    if (event.isGroup) {
+      formData.participants = JSON.parse(formData.participants);
+    }
+
     const screenshotFile = await data.get("screenshot");
-    console.log(screenshotFile);
     const s3ObjectKey = crypto.randomUUID();
 
     const newRegistration = await prisma.registration.create({
@@ -70,12 +74,22 @@ export async function registrationSubmit(metadata: any, data: any) {
         phone: formData.contact,
         collegeName: formData.college,
         paymentId: formData.utrNumber,
-        noOfParticipants: event.isGroup ? formData.participants.length : 0,
-        participants: event.isGroup
-          ? {
-              create: formData.participants,
-            }
-          : undefined,
+        noOfParticipants: event.isGroup ? formData.participants.length : 1,
+        participants: {
+          create: event.isGroup
+            ? formData.participants.map((p: any) => ({
+                name: p.name,
+                phone: p.phone,
+                isRegistrant: !!p.isRegistrant,
+              }))
+            : [
+                {
+                  name: formData.name,
+                  phone: formData.contact,
+                  isRegistrant: true,
+                },
+              ],
+        },
         paymentAmount: event.registrationFee,
         screenshotUrl: `${process.env.S3_ENDPOINT}/${process.env.S3_BUCKET_NAME}/${s3ObjectKey}`,
       },
@@ -84,7 +98,6 @@ export async function registrationSubmit(metadata: any, data: any) {
         event: true,
       },
     });
-    console.log(newRegistration);
 
     return {
       status: "success",

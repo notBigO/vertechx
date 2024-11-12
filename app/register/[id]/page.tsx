@@ -102,7 +102,6 @@ const RegistrationPage = async ({ params }: { params: any }) => {
     );
   }
 
-  // Render the event registration form
   return (
     <div>
       <EventRegistrationForm event={event} session={session} qr={mockQr} />

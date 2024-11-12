@@ -390,6 +390,10 @@
         "phone": {
           "type": "string"
         },
+        "isRegistrant": {
+          "type": "boolean",
+          "default": false
+        },
         "isCheckedIn": {
           "type": [
             "boolean",

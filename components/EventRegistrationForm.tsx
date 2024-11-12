@@ -29,6 +29,10 @@ const EventRegistrationForm = ({ event, session, qr }: { event: Event }) => {
   const [fileName, setFileName] = useState("");
   const [participantError, setParticipantError] = useState("");
 
+  // Account for registrant in participant counts
+  const maxAdditionalMembers = Math.max(0, (event.maxParticipants || 1) - 1);
+  const minAdditionalMembers = Math.max(0, (event.minParticipants || 1) - 1);
+
   const form = useForm({
     mode: "onChange",
     defaultValues: {
@@ -39,7 +43,7 @@ const EventRegistrationForm = ({ event, session, qr }: { event: Event }) => {
       utrNumber: "",
       screenshot: null,
       participants: event.isGroup
-        ? Array(event.minParticipants).fill({ name: "", phone: "" })
+        ? Array(minAdditionalMembers).fill({ name: "", phone: "" })
         : [],
     },
   });
@@ -52,15 +56,17 @@ const EventRegistrationForm = ({ event, session, qr }: { event: Event }) => {
   const validateParticipants = () => {
     if (!event.isGroup) return "";
 
-    if (fields.length < event.minParticipants) {
-      return `Minimum ${event.minParticipants} participants required`;
+    // Include registrant in count
+    const totalParticipants = fields.length + 1;
+
+    if (totalParticipants < event.minParticipants) {
+      return `Minimum ${event.minParticipants} participants required (including you)`;
     }
-    if (fields.length > event.maxParticipants) {
-      return `Maximum ${event.maxParticipants} participants allowed`;
+    if (totalParticipants > event.maxParticipants) {
+      return `Maximum ${event.maxParticipants} participants allowed (including you)`;
     }
 
     const participantValues = form.getValues("participants");
-
     const emptyFields = participantValues.some(
       (field) => !field?.name?.trim() || !field?.phone?.trim()
     );
@@ -83,13 +89,7 @@ const EventRegistrationForm = ({ event, session, qr }: { event: Event }) => {
       const error = validateParticipants();
       setParticipantError(error);
     }
-  }, [
-    form.watch("participants"),
-    fields.length,
-    event.isGroup,
-    event.minParticipants,
-    event.maxParticipants,
-  ]);
+  }, [form.watch("participants"), fields.length]);
 
   const onSubmit = async (data) => {
     if (event.isGroup) {
@@ -108,13 +108,27 @@ const EventRegistrationForm = ({ event, session, qr }: { event: Event }) => {
       formData.append("email", data.email);
       formData.append("phone", data.contact);
       formData.append("collegeName", data.college);
-      formData.append("noOfParticipants", event.isGroup ? fields.length : 1);
+      formData.append(
+        "noOfParticipants",
+        event.isGroup ? fields.length + 1 : 1
+      );
       formData.append("utrNumber", data.utrNumber);
       formData.append("eventId", event.id);
       formData.append("screenshot", data.screenshot);
 
       if (event.isGroup) {
-        formData.append("participants", JSON.stringify(data.participants));
+        const allParticipants = [
+          {
+            name: data.name,
+            phone: data.contact,
+            isRegistrant: true,
+          },
+          ...data.participants.map((p) => ({
+            ...p,
+            isRegistrant: false,
+          })),
+        ];
+        formData.append("participants", JSON.stringify(allParticipants));
       }
 
       const response = await fetch("/api/register", {
@@ -251,11 +265,11 @@ const EventRegistrationForm = ({ event, session, qr }: { event: Event }) => {
                     <div className="space-y-6">
                       <div className="flex items-center justify-between">
                         <h2 className="text-xl font-semibold text-gray-900">
-                          Team Members
+                          Additional Team Members
                         </h2>
                         <span className="text-sm text-gray-500">
-                          {event.minParticipants}-{event.maxParticipants}{" "}
-                          members required
+                          Add {minAdditionalMembers}-{maxAdditionalMembers} more
+                          members
                         </span>
                       </div>
 
@@ -278,7 +292,7 @@ const EventRegistrationForm = ({ event, session, qr }: { event: Event }) => {
                                 <h3 className="font-medium text-gray-900">
                                   Team Member {index + 1}
                                 </h3>
-                                {fields.length > event.minParticipants && (
+                                {fields.length > minAdditionalMembers && (
                                   <Button
                                     type="button"
                                     variant="ghost"
@@ -343,7 +357,7 @@ const EventRegistrationForm = ({ event, session, qr }: { event: Event }) => {
                           </Card>
                         ))}
 
-                        {fields.length < event.maxParticipants && (
+                        {fields.length < maxAdditionalMembers && (
                           <Button
                             type="button"
                             variant="outline"
@@ -493,7 +507,6 @@ const EventRegistrationForm = ({ event, session, qr }: { event: Event }) => {
                   </div>
                 </div>
 
-                {/* Submit Button */}
                 <div className="lg:col-span-2 pt-4">
                   <Button
                     type="submit"
