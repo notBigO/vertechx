@@ -84,10 +84,6 @@ export default function Ticket({
                   {registration.event.venue}
                 </p>
               </div>
-              {/* <div className="space-y-1">
-                <p className="text-xs text-primary">Section</p>
-                <p className="text-xs sm:text-sm text-white">A1</p>
-              </div> */}
             </div>
 
             {/* Participants Section */}
