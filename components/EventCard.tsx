@@ -1,7 +1,7 @@
-import { Event } from "@prisma/client";
+import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import { Event } from "@prisma/client";
 
 const EventCard = ({ eventData }: { eventData: Event }) => {
   const formattedDate = eventData.date
@@ -14,30 +14,33 @@ const EventCard = ({ eventData }: { eventData: Event }) => {
 
   return (
     <Link
-      className="bg-white rounded-xl overflow-hidden shadow-md w-72 h-96 flex flex-col"
+      className="bg-white rounded-xl overflow-hidden shadow-md w-72 flex flex-col transition-transform duration-200 hover:scale-102 hover:shadow-lg"
       href={`/events/${eventData.slug}`}
     >
-      <div className="w-full h-40 relative">
+      <div className="w-full relative aspect-square">
         <Image
           src={eventData.poster_url}
-          alt="Event"
+          alt={`${eventData.title} poster`}
           layout="fill"
-          objectFit="fit"
-          className="rounded-t-xl"
+          objectFit="contain"
+          className="rounded-t-xl p-4"
+          priority
         />
       </div>
       <div className="p-4 flex-grow flex flex-col bg-primary text-white">
-        <div className="flex items-center mb-2">
-          <div className="bg-[#933cfd] text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">
+        <div className="flex items-center gap-2 mb-2">
+          <span className="bg-[#933cfd] text-xs font-semibold px-2.5 py-0.5 rounded-full">
             {formattedDate}
-          </div>
-          <div className="text-xs truncate">{eventData.venue}</div>
+          </span>
+          <span className="text-xs truncate">{eventData.venue}</span>
         </div>
-        <h2 className="text-xl font-bold mb-2 truncate">{eventData.title}</h2>
-        <p className="text-sm mb-4 flex-grow overflow-hidden">
+        <h2 className="text-xl font-bold mb-2 line-clamp-2">
+          {eventData.title}
+        </h2>
+        <p className="text-sm mb-4 flex-grow line-clamp-3">
           {eventData.description}
         </p>
-        <div className="flex items-center text-xs">
+        <div className="flex items-center text-xs text-gray-100">
           <svg
             className="w-4 h-4 mr-1"
             fill="none"
