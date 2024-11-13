@@ -18,15 +18,14 @@ const getEventsData = unstable_cache(
             : undefined,
       },
     });
-  },
-  ["events-data"],
-  { revalidate: 60 }
+  }
+  // ["events-data"],
+  // { revalidate: 60 }
 );
 
 const EventsPage = async ({ searchParams }: { searchParams: any }) => {
   let selectedCategory = searchParams.category ?? "All Events";
 
-  // Redirect if the selected category is invalid
   if (!categories.includes(selectedCategory)) {
     selectedCategory = "All Events";
     redirect(`/events?category=${selectedCategory}`);
@@ -36,7 +35,6 @@ const EventsPage = async ({ searchParams }: { searchParams: any }) => {
   try {
     eventsData = await getEventsData(selectedCategory);
 
-    // Sort Mega Events to the top
     eventsData.sort((a, b) => {
       if (a.category === "Mega Event" && b.category !== "Mega Event") {
         return -1;
@@ -88,7 +86,6 @@ const EventsPage = async ({ searchParams }: { searchParams: any }) => {
         </div>
       </div>
 
-      {/* Event listing */}
       <Suspense fallback={<div>Loading events...</div>}>
         <div
           className="

@@ -3,6 +3,10 @@ import { getNextAdminProps } from "@premieroctet/next-admin/appRouter";
 import prisma from "@/lib/client";
 import schema from "@/prisma/json-schema/json-schema.json";
 import { Event, Participant, User } from "@prisma/client";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { redirect } from "next/navigation";
+import Link from "next/link";
 
 export const options = {
   basePath: "/admin",
@@ -99,6 +103,24 @@ export const options = {
 };
 
 export default async function AdminPage({ params, searchParams }: PageProps) {
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return redirect("/");
+  }
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email },
+  });
+  if (!user || !user.role || user.role !== "ADMIN") {
+    return (
+      <div className="w-screen h-screen text-2xl flex flex-col items-center justify-center">
+        <h1>Yikes! Access Denied</h1>
+        <p>You need to be an admin to access this page.</p>
+        <Link href="/" className="underline text-purple-700">
+          Go back home
+        </Link>
+      </div>
+    );
+  }
   const props = await getNextAdminProps({
     params: params.nextadmin,
     searchParams,
