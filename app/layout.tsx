@@ -1,21 +1,36 @@
 import type { Metadata } from "next";
+import localFont from "next/font/local";
 import { GeistSans } from "geist/font/sans";
-import { Space_Grotesk } from "next/font/google";
+import { Space_Grotesk, Birthstone } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import { Toaster } from "@/components/ui/toaster";
 
-export const metadata: Metadata = {
-  title: "VertechX",
-};
+import Footer from "@/components/Footer";
+import ProgressBar from "@/components/Progressbar";
+import AuthProvider from "@/components/AuthProvider";
+
+import NavbarServer from "@/components/NavbarServer";
+
+// export const metadata: Metadata = {
+//   title: "VertechX",
+// };
+
+export const display = localFont({
+  src: "../assets/fonts/Thunder-VF.ttf",
+  variable: "--font-display",
+  display: "swap",
+});
+
+export const hero = Birthstone({
+  weight: ["400"],
+  subsets: ["latin"],
+});
 
 export const space = Space_Grotesk({
   weight: ["300", "400", "500", "600", "700"],
   subsets: ["latin"],
 });
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -25,10 +40,13 @@ export default function RootLayout({
       <body
         className={`${GeistSans.className} antialiased bg-background text-white`}
       >
-        <Navbar />
-        {children}
-        {/* <Toaster /> */}
-        <Footer />
+        <AuthProvider>
+          <ProgressBar />
+          <NavbarServer />
+          {children}
+
+          <Footer />
+        </AuthProvider>
       </body>
     </html>
   );

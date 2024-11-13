@@ -13,7 +13,9 @@ const getEventsData = unstable_cache(
     return await prisma.event.findMany({
       where: {
         category:
-          selectedCategory === "All Events" ? undefined : selectedCategory,
+          selectedCategory !== "All Events"
+            ? { equals: selectedCategory }
+            : undefined,
       },
     });
   },
@@ -29,11 +31,11 @@ const EventsPage = async ({ searchParams }: { searchParams: any }) => {
     redirect(`/events?category=${selectedCategory}`);
   }
 
-  let eventsData: any = [];
+  let eventsData: Event[] = [];
   try {
     eventsData = await getEventsData(selectedCategory);
 
-    eventsData.sort((a: any, b: any) => {
+    eventsData.sort((a, b) => {
       if (a.category === "Mega Event" && b.category !== "Mega Event") {
         return -1;
       } else if (a.category !== "Mega Event" && b.category === "Mega Event") {
@@ -48,40 +50,65 @@ const EventsPage = async ({ searchParams }: { searchParams: any }) => {
 
   return (
     <div
-      className={`${space.className} flex flex-col h-screen w-screen items-center mt-16 text-4xl text-primary`}
+      className={`${space.className} flex flex-col h-full w-full items-center mt-16 text-4xl text-primary`}
     >
       <h1>Explore Events</h1>
 
-      <div className="mt-7 flex flex-row w-screen px-4 py-2 justify-start md:justify-center flex-nowrap overflow-x-scroll md:overflow-x-hidden">
-        {categories.map((category) => (
-          <Link
-            href={`/events?category=${category}`}
-            key={category}
-            className={`px-3 text-lg py-1 text-white text-nowrap cursor-pointer backdrop-blur-sm rounded-xl m-2 border border-primary ${
-              category === selectedCategory ? "bg-primary" : ""
-            }`}
-            prefetch={false}
-          >
-            {category}
-          </Link>
-        ))}
+      <div className="w-full overflow-x-auto mb-6 sm:mb-8 mt-10">
+        <div
+          className="
+            flex 
+            justify-start 
+            md:justify-center 
+            items-center
+            space-x-2 
+            pb-2 
+            mx-auto 
+            max-w-4xl
+            snap-x 
+            scroll-smooth
+          "
+        >
+          {categories.map((category) => (
+            <Link
+              href={`/events?category=${category}`}
+              key={category}
+              className={`flex items-center justify-center px-4 sm:px-5 py-2 min-w-[90px] sm:min-w-[100px] md:min-w-[120px] text-xs sm:text-sm md:text-base whitespace-nowrap rounded-xl transition-colors duration-200 text-center snap-start ${
+                category === selectedCategory
+                  ? "bg-primary text-white"
+                  : "bg-gray-100 text-gray-700 hover:bg-primary/10"
+              }`}
+              prefetch={false}
+            >
+              {category}
+            </Link>
+          ))}
+        </div>
       </div>
 
-      {/* Event listing */}
       <Suspense fallback={<div>Loading events...</div>}>
-        <div className="event-container flex flex-col items-center">
+        <div
+          className="
+            w-full 
+            px-4 
+            py-7
+            grid 
+            grid-cols-1 
+            sm:grid-cols-2 
+            md:grid-cols-3 
+            lg:grid-cols-4 
+            gap-4 
+            justify-items-center
+          "
+        >
           {eventsData.length > 0 ? (
-            eventsData.map((event: Event) =>
-              event.category === "Mega Event" ? (
-                <div key={event.id} className="mega-event-highlight">
-                  Mega Event
-                </div>
-              ) : (
-                <EventCard key={event.id} eventData={event} />
-              )
-            )
+            eventsData.map((event) => (
+              <EventCard key={event.id} eventData={event} />
+            ))
           ) : (
-            <p>No events found</p>
+            <div className="col-span-full text-center text-xl text-gray-500">
+              No events found
+            </div>
           )}
         </div>
       </Suspense>

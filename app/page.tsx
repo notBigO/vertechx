@@ -1,7 +1,13 @@
-import React from "react";
+import AboutSection from "@/components/About";
+import Hero from "@/components/Hero";
 
 const Home = () => {
-  return <div>Home</div>;
+  return (
+    <div className="min-h-screen bg-[#0F0F0F] text-white">
+      <Hero />
+      <AboutSection />
+    </div>
+  );
 };
 
 export default Home;

@@ -18,12 +18,18 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Session } from "next-auth";
 
-const Navbar = () => {
+interface NavbarClientProps {
+  initialSession: Session | null;
+}
+
+const NavbarClient = ({ initialSession }: NavbarClientProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { data: session } = useSession();
+  const { data: sessionData } = useSession();
+  const session = sessionData ?? initialSession;
 
-  const getInitials = (name) => {
+  const getInitials = (name?: string | null) => {
     if (!name) return "UN";
     return name
       .split(" ")
@@ -45,6 +51,7 @@ const Navbar = () => {
               width={80}
               height={50}
               className="object-contain"
+              priority
             />
             <Image
               src={Logo}
@@ -52,6 +59,7 @@ const Navbar = () => {
               width={100}
               height={50}
               className="object-contain ml-4"
+              priority
             />
           </Link>
         </div>
@@ -76,9 +84,9 @@ const Navbar = () => {
               <DropdownMenuTrigger asChild>
                 <Avatar className="cursor-pointer hover:ring-2 hover:ring-primary transition-all w-10 h-10">
                   <AvatarImage
-                    src={session?.user?.image}
+                    src={session.user?.image || undefined}
+                    referrerPolicy="no-referrer"
                     alt={session.user?.name || "User Avatar"}
-                    className="object-cover"
                   />
                   <AvatarFallback>
                     {getInitials(session.user?.name)}
@@ -118,9 +126,9 @@ const Navbar = () => {
               onClick={() => setIsMenuOpen((prev) => !prev)}
             >
               <AvatarImage
-                src={session.user?.image}
+                src={session.user?.image || undefined}
+                referrerPolicy="no-referrer"
                 alt={session.user?.name || "User Avatar"}
-                className="object-cover"
               />
               <AvatarFallback>{getInitials(session.user?.name)}</AvatarFallback>
             </Avatar>
@@ -141,8 +149,8 @@ const Navbar = () => {
                 <Avatar className="w-16 h-16 mb-2">
                   <AvatarImage
                     src={session.user?.image || undefined}
+                    referrerPolicy="no-referrer"
                     alt={session.user?.name || "User Avatar"}
-                    className="object-cover"
                   />
                   <AvatarFallback className="text-2xl">
                     {getInitials(session.user?.name)}
@@ -192,4 +200,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default NavbarClient;

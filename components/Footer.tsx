@@ -9,14 +9,10 @@ import {
   FaLinkedinIn,
 } from "react-icons/fa";
 import Link from "next/link";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
-
 const Footer = () => {
   return (
-    <footer className="bg-background text-white py-10 border-t border-[#43434370]">
+    <footer className="bg-background text-white py-10 border-t border-[#43434370] md:px-10">
       <div className="container mx-auto px-4 md:px-0 flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
-        {/* Branding and About */}
         <div className="flex flex-col items-start gap-4">
           <Link href="/">
             <Image src={MVJLogo} alt="MVJ Logo" width={100} height={50} />
@@ -85,31 +81,8 @@ const Footer = () => {
             </a>
           </p>
         </div>
-
-        {/* Newsletter Subscription */}
-        <div className="flex flex-col gap-2 max-w-xs">
-          <h4 className="text-lg font-semibold text-primary">Stay Updated</h4>
-          <p className="text-sm text-gray-400">
-            Subscribe to our newsletter to get the latest updates about the
-            event.
-          </p>
-          <form className="flex flex-col gap-2">
-            <Input
-              type="email"
-              placeholder="Enter your email"
-              className="px-4 py-2 rounded-md bg-[#2b3648] border border-[#43434370] text-white focus:border-primary focus:ring-0"
-            />
-            <Button
-              type="submit"
-              className="px-4 py-2 rounded-md bg-primary text-white hover:bg-primary-dark transition"
-            >
-              Subscribe
-            </Button>
-          </form>
-        </div>
       </div>
 
-      {/* Footer Bottom */}
       <div className="mt-10 border-t border-[#43434370] pt-4 text-center text-sm text-gray-400">
         &copy; {new Date().getFullYear()} VertechX. All Rights Reserved. Built
         with ❤️ by MVJ College of Engineering.

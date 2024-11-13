@@ -1,7 +1,8 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import EventRegistrationForm from "@/components/EventRegistrationForm";
+import { Button } from "@/components/ui/button";
 import prisma from "@/lib/client";
-import { getEvent } from "@/lib/events";
+import { Frown, PartyPopper, Repeat2 } from "lucide-react";
 import { getServerSession } from "next-auth";
 import { unstable_cache } from "next/cache";
 import Link from "next/link";
@@ -66,24 +67,41 @@ const RegistrationPage = async ({ params }: { params: any }) => {
 
   if (registration) {
     return (
-      <div className="w-screen h-screen p-8 font-satoshi flex flex-col items-center justify-center text-white">
-        <h1 className="text-3xl font-bold">
-          You have already registered for this event.
-        </h1>
-        <p>
-          Unfortunately, you cannot register for the same event more than once.
-        </p>
-        <Link
-          href="/"
-          className="px-4 py-1 bg-gray-400 bg-opacity-15 text-nowrap border-gray-400 border border-opacity-40 cursor-pointer font-satoshi backdrop-blur-sm rounded-xl m-2 hover:bg-gradient-purple transition-all duration-500 hover:scale-105"
-        >
-          Go back to home
-        </Link>
+      <div className="h-screen flex flex-col items-center justify-center text-center px-4">
+        <div className="max-w-md">
+          <div className="flex justify-center items-center mb-6 space-x-4">
+            <PartyPopper className="w-16 h-16 text-yellow-500 animate-bounce" />
+            <Frown
+              className="w-16 h-16 text-red-500"
+              style={{ transform: "screw(45deg)" }}
+            />
+          </div>
+          <h1 className="text-4xl font-bold mb-6 text-primary">
+            Whoopsie-Daisy! 🎉
+          </h1>
+          <p className="text-xl mb-8 text-white">
+            Looks like you've already got a golden ticket to this shindig!
+            You're all set and ready to rock{" "}
+            <Repeat2 className="inline-block w-5 h-5 text-primary" />
+          </p>
+          <Button
+            asChild
+            className="bg-primary hover:bg-secondary transition-all duration-300 shadow-lg hover:shadow-xl"
+          >
+            <Link
+              href="/events"
+              className="flex items-center justify-center gap-2"
+            >
+              <Frown className="w-5 h-5" />
+              Back to Events
+              <PartyPopper className="w-5 h-5" />
+            </Link>
+          </Button>
+        </div>
       </div>
     );
   }
 
-  // Render the event registration form
   return (
     <div>
       <EventRegistrationForm event={event} session={session} qr={mockQr} />
