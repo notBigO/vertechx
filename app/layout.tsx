@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { GeistSans } from "geist/font/sans";
 import { Space_Grotesk, Birthstone } from "next/font/google";
@@ -9,10 +8,6 @@ import ProgressBar from "@/components/Progressbar";
 import AuthProvider from "@/components/AuthProvider";
 
 import NavbarServer from "@/components/NavbarServer";
-
-// export const metadata: Metadata = {
-//   title: "VertechX",
-// };
 
 export const display = localFont({
   src: "../assets/fonts/Thunder-VF.ttf",
