@@ -1,8 +1,9 @@
 "use client";
 
 import React from "react";
-
+import Placeholder from "@/assets/vertechx_placeholder.jpg";
 import Image from "next/image";
+import SectionHeader from "./SectionHeader";
 
 const AboutSection = () => {
   return (
@@ -15,7 +16,7 @@ const AboutSection = () => {
       </div>
 
       <div className="container mx-auto">
-        {/* <SectionHeader title="About VertechX 12.0" /> */}
+        <SectionHeader title="VertechX 12.0" />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div className="space-y-6">
@@ -45,9 +46,9 @@ const AboutSection = () => {
           </div>
 
           <div className="relative aspect-square">
-            <div className="absolute inset-4 border border-primary/30 rounded-lg overflow-hidden">
+            <div className="absolute inset-4 rounded-lg overflow-hidden">
               <Image
-                src="/api/placeholder/800/800"
+                src={Placeholder}
                 alt="VertechX Event"
                 fill
                 className="object-cover rounded-lg"

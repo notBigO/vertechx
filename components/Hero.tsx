@@ -74,9 +74,15 @@ const CyberpunkHero = () => {
         <div className="relative">
           <p
             className={`whitespace-pre-wrap text-center text-2xl md:text-5xl font-bold ${display.className} 
-                        text-[${color}] animate-pulse relative`}
+                        animate-pulse relative`}
           >
             TECH IN MOMENTUM
+          </p>
+          <p
+            className={`whitespace-pre-wrap text-center text-2xl md:text-3xl mt-5 font-bold ${display.className} 
+                         relative`}
+          >
+            LAUNCH DAY - 19th November, 2024
           </p>
 
           <div className="absolute -left-6 top-0 h-full w-[2px] bg-[#7c09ff] opacity-50" />
