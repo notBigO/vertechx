@@ -52,7 +52,6 @@ const Footer = () => {
           ))}
         </div>
 
-        {/* Contact Information */}
         <div className="flex flex-col gap-2">
           <h4 className="text-lg font-semibold text-primary">Contact Us</h4>
           <p className="text-sm text-gray-400">
@@ -84,8 +83,8 @@ const Footer = () => {
       </div>
 
       <div className="mt-10 border-t border-[#43434370] pt-4 text-center text-sm text-gray-400">
-        &copy; {new Date().getFullYear()} VertechX. All Rights Reserved. Built
-        with ❤️ by MVJ College of Engineering.
+        &copy; {new Date().getFullYear()} VertechX. Built with ❤️ by VertechX
+        Website Team.
       </div>
     </footer>
   );

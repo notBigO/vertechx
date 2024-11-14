@@ -1,6 +1,7 @@
-import AboutSection from "@/components/About";
-import Hero from "@/components/Hero";
+import AboutSection from "@/components/AboutSection";
+import Hero from "@/components/HeroSection";
 import ParadoxiaSection from "@/components/ParadoxiaSection";
+import TeaserSection from "@/components/TeaserSection";
 import UniComponent from "@/components/UniComponent";
 
 const Home = () => {
@@ -10,6 +11,7 @@ const Home = () => {
       <AboutSection />
       <UniComponent />
       <ParadoxiaSection />
+      <TeaserSection />
     </div>
   );
 };

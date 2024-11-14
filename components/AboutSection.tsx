@@ -1,25 +1,36 @@
 "use client";
 
 import React from "react";
+import { motion } from "framer-motion";
 import Placeholder from "@/assets/vertechx_placeholder.jpg";
 import Image from "next/image";
 import SectionHeader from "./SectionHeader";
 
 const AboutSection = () => {
   return (
-    <section className="relative py-20 px-6 bg-[#0F0F0F]">
+    <motion.section
+      className="relative py-20 px-6 bg-[#0F0F0F]"
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6 }}
+    >
       <div className="absolute inset-0 overflow-hidden opacity-10">
         <div
           className="h-full w-full bg-[linear-gradient(#7c09ff_1px,_transparent_1px),_linear-gradient(90deg,_#7c09ff_1px,_transparent_1px)]"
           style={{ backgroundSize: "20px 20px" }}
         />
       </div>
-
       <div className="container mx-auto">
         <SectionHeader title="VertechX 12.0" />
-
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          <div className="space-y-6">
+          <motion.div
+            className="space-y-6"
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
             <p className="text-gray-300 leading-relaxed">
               VertechX 12.0 is a prestigious national intercollegiate technical
               event that brings together over 2,500 brilliant minds from 200
@@ -43,9 +54,14 @@ const AboutSection = () => {
                 <p className="text-sm text-gray-400">Colleges</p>
               </div>
             </div>
-          </div>
-
-          <div className="relative aspect-square">
+          </motion.div>
+          <motion.div
+            className="relative aspect-square"
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
             <div className="absolute inset-4 rounded-lg overflow-hidden">
               <Image
                 src={Placeholder}
@@ -53,16 +69,12 @@ const AboutSection = () => {
                 fill
                 className="object-cover rounded-lg"
               />
-
-              <div
-                className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent 
-                              animate-scan"
-              />
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent animate-scan" />
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 
