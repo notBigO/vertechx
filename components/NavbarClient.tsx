@@ -42,7 +42,6 @@ const NavbarClient = ({ initialSession }: NavbarClientProps) => {
   return (
     <nav className="h-24 border-b border-[#43434370] z-50 w-full">
       <div className="container mx-auto h-full flex items-center justify-between px-4 md:px-4 max-w-screen-xl">
-        {/* Logo and Branding */}
         <div className="flex items-center gap-4">
           <Link href="/" className="flex items-center">
             <Image
@@ -64,8 +63,7 @@ const NavbarClient = ({ initialSession }: NavbarClientProps) => {
           </Link>
         </div>
 
-        {/* Desktop Navigation Links */}
-        <div className="hidden md:flex items-center gap-10">
+        {/* <div className="hidden md:flex items-center gap-10">
           {navLinks.map((link) => (
             <Link
               key={link.name}
@@ -75,10 +73,9 @@ const NavbarClient = ({ initialSession }: NavbarClientProps) => {
               {link.name}
             </Link>
           ))}
-        </div>
+        </div> */}
 
-        {/* Desktop Authentication */}
-        <div className="hidden md:flex items-center">
+        {/* <div className="hidden md:flex items-center">
           {session ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -116,10 +113,9 @@ const NavbarClient = ({ initialSession }: NavbarClientProps) => {
               Register Now!
             </Button>
           )}
-        </div>
+        </div> */}
 
-        {/* Mobile Menu Button */}
-        <div className="md:hidden flex items-center">
+        {/* <div className="md:hidden flex items-center">
           {session ? (
             <Avatar
               className="mr-4 w-10 h-10 cursor-pointer"
@@ -139,10 +135,9 @@ const NavbarClient = ({ initialSession }: NavbarClientProps) => {
           >
             {isMenuOpen ? <FiX /> : <FiMenu />}
           </button>
-        </div>
+        </div> */}
 
-        {/* Mobile Navigation Menu */}
-        {isMenuOpen && (
+        {/* {isMenuOpen && (
           <div className="fixed top-24 left-0 w-full bg-background shadow-lg md:hidden flex flex-col items-center py-4 z-50 px-4">
             {session && (
               <div className="flex flex-col items-center mb-4">
@@ -194,7 +189,7 @@ const NavbarClient = ({ initialSession }: NavbarClientProps) => {
               </Button>
             )}
           </div>
-        )}
+        )} */}
       </div>
     </nav>
   );

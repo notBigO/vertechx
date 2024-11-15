@@ -38,8 +38,7 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Navigation Links */}
-        <div className="flex flex-col gap-2">
+        {/* <div className="flex flex-col gap-2">
           <h4 className="text-lg font-semibold text-primary">Quick Links</h4>
           {navLinks.map((link) => (
             <Link
@@ -50,9 +49,8 @@ const Footer = () => {
               {link.name}
             </Link>
           ))}
-        </div>
+        </div> */}
 
-        {/* Contact Information */}
         <div className="flex flex-col gap-2">
           <h4 className="text-lg font-semibold text-primary">Contact Us</h4>
           <p className="text-sm text-gray-400">
@@ -68,7 +66,7 @@ const Footer = () => {
               href="mailto:info@vertechx.com"
               className="hover:text-primary transition"
             >
-              info@vertechx.com
+              contactmvjce@gmail.com
             </a>
           </p>
           <p className="text-sm text-gray-400">
@@ -77,15 +75,15 @@ const Footer = () => {
               href="tel:+911234567890"
               className="hover:text-primary transition"
             >
-              +91 12345 67890
+              +91 96206 59690
             </a>
           </p>
         </div>
       </div>
 
       <div className="mt-10 border-t border-[#43434370] pt-4 text-center text-sm text-gray-400">
-        &copy; {new Date().getFullYear()} VertechX. All Rights Reserved. Built
-        with ❤️ by MVJ College of Engineering.
+        &copy; {new Date().getFullYear()} VertechX. Built with ❤️ by VertechX
+        Website Team.
       </div>
     </footer>
   );

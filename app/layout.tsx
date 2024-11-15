@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { GeistSans } from "geist/font/sans";
 import { Space_Grotesk, Birthstone } from "next/font/google";
@@ -9,10 +8,6 @@ import ProgressBar from "@/components/Progressbar";
 import AuthProvider from "@/components/AuthProvider";
 
 import NavbarServer from "@/components/NavbarServer";
-
-// export const metadata: Metadata = {
-//   title: "VertechX",
-// };
 
 export const display = localFont({
   src: "../assets/fonts/Thunder-VF.ttf",
@@ -37,6 +32,10 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>VertechX 2024</title>
+      </head>
       <body
         className={`${GeistSans.className} antialiased bg-background text-white`}
       >

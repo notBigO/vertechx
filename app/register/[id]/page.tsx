@@ -36,7 +36,7 @@ const getEventData = unstable_cache(
           isGroup: true,
         },
       });
-
+      console.log("Event Data: ", event);
       if (!event) {
         return null;
       }
