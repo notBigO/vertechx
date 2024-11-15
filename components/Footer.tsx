@@ -23,18 +23,21 @@ const Footer = () => {
             compete!
           </p>
           <div className="flex gap-4 text-xl text-primary">
-            <Link href="https://facebook.com" aria-label="Facebook">
+            {/* <Link href="https://facebook.com" aria-label="Facebook">
               <FaFacebookF />
             </Link>
             <Link href="https://twitter.com" aria-label="Twitter">
               <FaTwitter />
-            </Link>
-            <Link href="https://instagram.com" aria-label="Instagram">
+            </Link> */}
+            <Link
+              href="https://https://www.instagram.com/vertechx?igsh=NTdpZTZ0amNmMHR4.com"
+              aria-label="Instagram"
+            >
               <FaInstagram />
             </Link>
-            <Link href="https://linkedin.com" aria-label="LinkedIn">
+            {/* <Link href="https://linkedin.com" aria-label="LinkedIn">
               <FaLinkedinIn />
-            </Link>
+            </Link> */}
           </div>
         </div>
 
