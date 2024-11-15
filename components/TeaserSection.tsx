@@ -3,16 +3,18 @@ import SectionHeader from "./SectionHeader";
 
 const TeaserSection = () => {
   return (
-    <section className="relative py-20 px-6 bg-[#0F0F0F]">
+    <section className="relative py-20 px-6 bg-[#0F0F0F] text-white">
       <div className="container mx-auto">
-        <SectionHeader title="VertechX Teaser" />
+        <SectionHeader title="Here's a glimpse!" />
+
         <div className="relative w-full max-w-3xl mx-auto">
-          <div className={`aspect-video rounded-lg overflow-hidden`}>
+          <div className="aspect-video rounded-lg overflow-hidden">
             <video
               autoPlay
-              loop
               muted
+              controls
               playsInline
+              loop
               className="w-full h-full object-cover"
             >
               <source

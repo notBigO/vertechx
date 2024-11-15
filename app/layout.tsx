@@ -32,6 +32,10 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>VertechX 2024</title>
+      </head>
       <body
         className={`${GeistSans.className} antialiased bg-background text-white`}
       >
