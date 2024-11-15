@@ -53,7 +53,7 @@ const Hero = memo(function CyberpunkHero() {
             TECH IN MOMENTUM
           </p>
           <p
-            className={`text-xl md:text-5xl md:mt-14 font-bold ${display.className}  relative`}
+            className={`text-lg md:text-5xl md:mt-14 font-bold ${display.className}  relative`}
           >
             LAUNCH DAY - 19th November, 2024
           </p>
