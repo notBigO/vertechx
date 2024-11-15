@@ -20,8 +20,8 @@ const UniComponent = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <motion.div
             className="relative aspect-square"
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 100 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
@@ -37,10 +37,10 @@ const UniComponent = () => {
           </motion.div>
           <motion.div
             className="space-y-6"
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 100 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
           >
             <p className="text-gray-300 leading-relaxed">
               MVJ College of Engineering, located in Bangalore, India, is a
