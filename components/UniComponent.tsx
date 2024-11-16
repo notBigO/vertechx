@@ -3,7 +3,7 @@
 import React from "react";
 import SectionHeader from "./SectionHeader";
 import Image from "next/image";
-import MVJ from "@/assets/MVJUNI.jpg";
+import MVJ from "@/assets/mvjcampus.webp";
 import { motion } from "framer-motion";
 
 const UniComponent = () => {
@@ -56,8 +56,8 @@ const UniComponent = () => {
               academic growth, technical skill-building, and industry exposure.
             </p>
             <div className="grid grid-cols-2 gap-4 pt-4">
-              <div className="border border-primary/30 rounded-lg p-4 text-center bg-black/30">
-                <h3 className="text-3xl font-bold text-primary">10,000+</h3>
+              <div className="border border-primary/30 rounded-lg p-4 text-center flex items-center flex-col justify-center bg-black/30">
+                <h3 className="text-2xl font-bold text-primary">10,000+</h3>
                 <p className="text-sm text-gray-400">Students</p>
               </div>
               <div className="border border-primary/30 rounded-lg p-4 text-center bg-black/30">
