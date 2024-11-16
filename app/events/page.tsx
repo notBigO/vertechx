@@ -31,9 +31,9 @@ const getEventsData = unstable_cache(
             : undefined,
       },
     });
-  }
-  // ["events-data"],
-  // { revalidate: 60 }
+  },
+  ["events-data"],
+  { revalidate: 60 }
 );
 
 const EventsPage = async ({ searchParams }: { searchParams: any }) => {
