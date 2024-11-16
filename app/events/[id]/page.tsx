@@ -40,12 +40,12 @@ const getEventData = unstable_cache(
       console.error("Error fetching event:", error);
       throw new Error("Failed to fetch event data");
     }
-  },
-  ["event-data"],
-  {
-    revalidate: 60,
-    tags: ["event-data"],
   }
+  // ["event-data"],
+  // {
+  //   revalidate: 60,
+  //   tags: ["event-data"],
+  // }
 );
 
 export async function generateMetadata({ params }: { params: { id: string } }) {
@@ -56,7 +56,8 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
       title: "404 - Event not found",
     };
   }
-
+  console.log("Event poster URL: ", eventData.poster_url);
+  console.log("Event desc: ", eventData.description);
   return {
     title: eventData.title,
     description: eventData.description,
