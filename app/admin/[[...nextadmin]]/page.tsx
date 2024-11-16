@@ -103,24 +103,24 @@ export const options = {
 };
 
 export default async function AdminPage({ params, searchParams }: PageProps) {
-  const session = await getServerSession(authOptions);
-  if (!session) {
-    return redirect("/");
-  }
-  const user = await prisma.user.findUnique({
-    where: { email: session.user.email },
-  });
-  if (!user || !user.role || user.role !== "ADMIN") {
-    return (
-      <div className="w-screen h-screen text-2xl flex flex-col items-center justify-center">
-        <h1>Yikes! Access Denied</h1>
-        <p>You need to be an admin to access this page.</p>
-        <Link href="/" className="underline text-purple-700">
-          Go back home
-        </Link>
-      </div>
-    );
-  }
+  // const session = await getServerSession(authOptions);
+  // if (!session) {
+  //   return redirect("/");
+  // }
+  // const user = await prisma.user.findUnique({
+  //   where: { email: session.user.email },
+  // });
+  // if (!user || !user.role || user.role !== "ADMIN") {
+  //   return (
+  //     <div className="w-screen h-screen text-2xl flex flex-col items-center justify-center">
+  //       <h1>Yikes! Access Denied</h1>
+  //       <p>You need to be an admin to access this page.</p>
+  //       <Link href="/" className="underline text-purple-700">
+  //         Go back home
+  //       </Link>
+  //     </div>
+  //   );
+  // }
   const props = await getNextAdminProps({
     params: params.nextadmin,
     searchParams,
