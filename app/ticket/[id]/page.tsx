@@ -20,7 +20,7 @@ async function TicketDisplay({ registrationId }: { registrationId: string }) {
 }
 
 const TicketSkeleton = () => (
-  <div className="flex flex-col items-center justify-center gap-4 w-screen px-10">
+  <div className="flex flex-col items-center justify-center gap-4 w-screen px-10 md:max-w-[512px] md:w-full">
     <Skeleton className="h-8 w-48" />
     <Skeleton className="h-6 w-full max-w-96" />
     <Skeleton className="h-[400px] w-full aspect-[16/9]" />
