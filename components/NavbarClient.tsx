@@ -63,7 +63,7 @@ const NavbarClient = ({ initialSession }: NavbarClientProps) => {
           </Link>
         </div>
 
-        {/* <div className="hidden md:flex items-center gap-10">
+        <div className="hidden md:flex items-center gap-10 mr-32">
           {navLinks.map((link) => (
             <Link
               key={link.name}
@@ -73,9 +73,9 @@ const NavbarClient = ({ initialSession }: NavbarClientProps) => {
               {link.name}
             </Link>
           ))}
-        </div> */}
+        </div>
 
-        {/* <div className="hidden md:flex items-center">
+        <div className="hidden md:flex items-center">
           {session ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -113,9 +113,9 @@ const NavbarClient = ({ initialSession }: NavbarClientProps) => {
               Register Now!
             </Button>
           )}
-        </div> */}
+        </div>
 
-        {/* <div className="md:hidden flex items-center">
+        <div className="md:hidden flex items-center">
           {session ? (
             <Avatar
               className="mr-4 w-10 h-10 cursor-pointer"
@@ -135,9 +135,9 @@ const NavbarClient = ({ initialSession }: NavbarClientProps) => {
           >
             {isMenuOpen ? <FiX /> : <FiMenu />}
           </button>
-        </div> */}
+        </div>
 
-        {/* {isMenuOpen && (
+        {isMenuOpen && (
           <div className="fixed top-24 left-0 w-full bg-background shadow-lg md:hidden flex flex-col items-center py-4 z-50 px-4">
             {session && (
               <div className="flex flex-col items-center mb-4">
@@ -189,7 +189,7 @@ const NavbarClient = ({ initialSession }: NavbarClientProps) => {
               </Button>
             )}
           </div>
-        )} */}
+        )}
       </div>
     </nav>
   );

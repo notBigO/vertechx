@@ -33,7 +33,7 @@ export default function Ticket({
       hour12: true,
     });
   };
-
+  console.log("Registration: ", registration);
   return (
     <div className="w-full p-2 sm:p-4 max-w-3xl mx-auto">
       <ShineBorder
@@ -79,7 +79,7 @@ export default function Ticket({
                 </p>
               </div>
               <div className="space-y-1">
-                <p className="text-xs text-primary">Location</p>
+                <p className="text-xs text-primary">Venue</p>
                 <p className="text-xs sm:text-sm text-white">
                   {registration.event.venue}
                 </p>
@@ -87,24 +87,26 @@ export default function Ticket({
             </div>
 
             {/* Participants Section */}
-            <div className="mt-6">
-              <h3 className="text-xs text-white mb-2">Participants</h3>
-              <div className="space-y-2">
-                {registration.participants.map((participant: any) => (
-                  <div
-                    key={participant.id}
-                    className="flex flex-col sm:flex-row sm:items-center justify-between p-2 rounded bg-background"
-                  >
-                    <span className="text-xs sm:text-sm text-white mb-1 sm:mb-0">
-                      {participant.name}
-                    </span>
-                    <span className="text-xs text-white">
-                      {participant.phone}
-                    </span>
-                  </div>
-                ))}
+            {registration.noOfParticipants > 1 ? (
+              <div className="mt-6">
+                <h3 className="text-xs text-primary mb-2">Participants</h3>
+                <div className="space-y-2">
+                  {registration.participants.map((participant: any) => (
+                    <div
+                      key={participant.id}
+                      className="flex flex-col sm:flex-row sm:items-center justify-between p-2 rounded bg-background"
+                    >
+                      <span className="text-xs sm:text-sm text-white mb-1 sm:mb-0">
+                        {participant.name}
+                      </span>
+                      <span className="text-xs text-white">
+                        {participant.phone}
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+            ) : null}
           </div>
 
           {/* Right Section */}

@@ -69,7 +69,7 @@ const EventsPage = async ({ searchParams }: { searchParams: any }) => {
 
       <div className="w-full mt-10">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="w-full overflow-x-auto no-scrollbar">
+          <div className="w-full xl:flex md:items-center md:justify-center overflow-x-auto no-scrollbar">
             <div className="flex gap-2 min-w-max pb-4">
               {categories.map((category) => (
                 <Link
@@ -86,7 +86,7 @@ const EventsPage = async ({ searchParams }: { searchParams: any }) => {
                     ${
                       category === selectedCategory
                         ? "bg-primary text-white"
-                        : "bg-gray-100 text-gray-700 hover:bg-primary/10"
+                        : "bg-gray-100 text-gray-700 hover:bg-secondary hover:text-white"
                     }
                   `}
                   prefetch={false}

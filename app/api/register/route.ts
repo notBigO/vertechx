@@ -12,7 +12,6 @@ cloudinary.config({
 
 export async function POST(req) {
   try {
-    // Get the user session
     const session = await getServerSession(authOptions);
     if (!session?.user) {
       return NextResponse.json(
@@ -24,7 +23,6 @@ export async function POST(req) {
     const formData = await req.formData();
     console.log("Form Data on server: ", formData);
 
-    // Extract and validate required fields
     const name = formData.get("name");
     const email = formData.get("email");
     const phone = formData.get("phone");
@@ -33,7 +31,6 @@ export async function POST(req) {
     const eventId = formData.get("eventId");
     const participantsJson = formData.get("participants");
 
-    // Validate required fields
     if (!name || !email || !phone || !collegeName || !utrNumber || !eventId) {
       return NextResponse.json(
         { error: "All fields are required" },
@@ -49,7 +46,6 @@ export async function POST(req) {
       return NextResponse.json({ error: "Event not found" }, { status: 404 });
     }
 
-    // Check for existing registration
     const existingRegistration = await prisma.registration.findFirst({
       where: {
         eventId: event.id,
@@ -64,7 +60,6 @@ export async function POST(req) {
       );
     }
 
-    // Handle file upload
     const file = formData.get("screenshot");
     if (!file) {
       return NextResponse.json(
@@ -81,7 +76,6 @@ export async function POST(req) {
       folder: "payment_screenshots",
     });
 
-    // Process participants for group events
     let participants = [];
     if (event.isGroup && participantsJson) {
       participants = JSON.parse(participantsJson);
