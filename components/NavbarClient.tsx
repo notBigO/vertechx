@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
@@ -26,8 +26,22 @@ interface NavbarClientProps {
 
 const NavbarClient = ({ initialSession }: NavbarClientProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const { data: sessionData } = useSession();
   const session = sessionData ?? initialSession;
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const toggleMenu = () => {
+    setIsMenuOpen((prev) => !prev);
+  };
 
   const getInitials = (name?: string | null) => {
     if (!name) return "UN";
@@ -40,9 +54,17 @@ const NavbarClient = ({ initialSession }: NavbarClientProps) => {
   };
 
   return (
-    <nav className="h-24 border-b border-[#43434370] z-50 w-full">
-      <div className="container mx-auto h-full flex items-center justify-between px-4 md:px-4 max-w-screen-xl">
-        <div className="flex items-center gap-4">
+    <nav
+      className={` w-full z-50 transition-all duration-300
+        ${
+          isScrolled
+            ? "bg-background/90 shadow-md backdrop-blur-md"
+            : "bg-background"
+        }
+        `}
+    >
+      <div className="container mx-auto h-full flex flex-col md:flex-row items-center justify-between px-4 max-w-screen-xl">
+        <div className="w-full flex items-center justify-between h-24">
           <Link href="/" className="flex items-center">
             <Image
               src={MVJLogo}
@@ -61,84 +83,98 @@ const NavbarClient = ({ initialSession }: NavbarClientProps) => {
               priority
             />
           </Link>
-        </div>
 
-        <div className="hidden md:flex items-center gap-10 mr-32">
-          {navLinks.map((link) => (
-            <Link
-              key={link.name}
-              href={link.href}
-              className="text-sm hover:text-primary transition"
+          <div className="hidden md:flex items-center gap-10">
+            {navLinks.map((link) => (
+              <Link
+                key={link.name}
+                href={link.href}
+                className="text-sm hover:text-primary transition"
+              >
+                {link.name}
+              </Link>
+            ))}
+          </div>
+
+          <div className="hidden md:flex items-center">
+            {session ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Avatar className="cursor-pointer hover:ring-2 hover:ring-primary transition-all w-10 h-10">
+                    <AvatarImage
+                      src={session.user?.image || undefined}
+                      referrerPolicy="no-referrer"
+                      alt={session.user?.name || "User Avatar"}
+                    />
+                    <AvatarFallback>
+                      {getInitials(session.user?.name)}
+                    </AvatarFallback>
+                  </Avatar>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56">
+                  <DropdownMenuLabel>
+                    <div className="flex flex-col">
+                      <span className="font-medium">{session.user?.name}</span>
+                      <span className="text-xs text-muted-foreground">
+                        {session.user?.email}
+                      </span>
+                    </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onSelect={() => signOut()}>
+                    Logout
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Button
+                className="bg-primary hover:bg-secondary"
+                onClick={() => signIn("google")}
+              >
+                Register Now!
+              </Button>
+            )}
+          </div>
+
+          <div className="md:hidden flex items-center">
+            {/* {session ? (
+              <Avatar
+                className="mr-4 w-10 h-10 cursor-pointer"
+                onClick={toggleMenu}
+              >
+                <AvatarImage
+                  src={session.user?.image || undefined}
+                  referrerPolicy="no-referrer"
+                  alt={session.user?.name || "User Avatar"}
+                />
+                <AvatarFallback>
+                  {getInitials(session.user?.name)}
+                </AvatarFallback>
+              </Avatar>
+            ) : null} */}
+            <button
+              className={`text-2xl transition-transform duration-300 ease-in-out ${
+                isMenuOpen ? "rotate-45" : ""
+              }`}
+              onClick={toggleMenu}
+              aria-label={isMenuOpen ? "Close menu" : "Open menu"}
             >
-              {link.name}
-            </Link>
-          ))}
+              {isMenuOpen ? <FiX /> : <FiMenu />}
+            </button>
+          </div>
         </div>
 
-        <div className="hidden md:flex items-center">
-          {session ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Avatar className="cursor-pointer hover:ring-2 hover:ring-primary transition-all w-10 h-10">
-                  <AvatarImage
-                    src={session.user?.image || undefined}
-                    referrerPolicy="no-referrer"
-                    alt={session.user?.name || "User Avatar"}
-                  />
-                  <AvatarFallback>
-                    {getInitials(session.user?.name)}
-                  </AvatarFallback>
-                </Avatar>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56">
-                <DropdownMenuLabel>
-                  <div className="flex flex-col">
-                    <span className="font-medium">{session.user?.name}</span>
-                    <span className="text-xs text-muted-foreground">
-                      {session.user?.email}
-                    </span>
-                  </div>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onSelect={() => signOut()}>
-                  Logout
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ) : (
-            <Button
-              className="bg-primary hover:bg-secondary"
-              onClick={() => signIn("google")}
-            >
-              Register Now!
-            </Button>
-          )}
-        </div>
-
-        <div className="md:hidden flex items-center">
-          {session ? (
-            <Avatar
-              className="mr-4 w-10 h-10 cursor-pointer"
-              onClick={() => setIsMenuOpen((prev) => !prev)}
-            >
-              <AvatarImage
-                src={session.user?.image || undefined}
-                referrerPolicy="no-referrer"
-                alt={session.user?.name || "User Avatar"}
-              />
-              <AvatarFallback>{getInitials(session.user?.name)}</AvatarFallback>
-            </Avatar>
-          ) : null}
-          <button
-            className="text-2xl"
-            onClick={() => setIsMenuOpen((prev) => !prev)}
-          >
-            {isMenuOpen ? <FiX /> : <FiMenu />}
-          </button>
-        </div>
-
-        {isMenuOpen && (
-          <div className="fixed top-24 left-0 w-full bg-background shadow-lg md:hidden flex flex-col items-center py-4 z-50 px-4">
+        <div
+          className={`
+            w-full md:hidden overflow-hidden transition-all duration-300 ease-in-out
+            ${
+              isMenuOpen
+                ? "max-h-[1000px] opacity-100 visible"
+                : "max-h-0 opacity-0 invisible"
+            }
+          `}
+        >
+          <div className="flex flex-col items-center py-4 space-y-4">
             {session && (
               <div className="flex flex-col items-center mb-4">
                 <Avatar className="w-16 h-16 mb-2">
@@ -189,7 +225,7 @@ const NavbarClient = ({ initialSession }: NavbarClientProps) => {
               </Button>
             )}
           </div>
-        )}
+        </div>
       </div>
     </nav>
   );
