@@ -54,15 +54,7 @@ const NavbarClient = ({ initialSession }: NavbarClientProps) => {
   };
 
   return (
-    <nav
-      className={` w-full z-50 transition-all duration-300
-        ${
-          isScrolled
-            ? "bg-background/90 shadow-md backdrop-blur-md"
-            : "bg-background"
-        }
-        `}
-    >
+    <nav className={` w-full z-50 transition-all duration-300`}>
       <div className="container mx-auto h-full flex flex-col md:flex-row items-center justify-between px-4 max-w-screen-xl">
         <div className="w-full flex items-center justify-between h-24">
           <Link href="/" className="flex items-center">
@@ -137,21 +129,6 @@ const NavbarClient = ({ initialSession }: NavbarClientProps) => {
           </div>
 
           <div className="md:hidden flex items-center">
-            {/* {session ? (
-              <Avatar
-                className="mr-4 w-10 h-10 cursor-pointer"
-                onClick={toggleMenu}
-              >
-                <AvatarImage
-                  src={session.user?.image || undefined}
-                  referrerPolicy="no-referrer"
-                  alt={session.user?.name || "User Avatar"}
-                />
-                <AvatarFallback>
-                  {getInitials(session.user?.name)}
-                </AvatarFallback>
-              </Avatar>
-            ) : null} */}
             <button
               className={`text-2xl transition-transform duration-300 ease-in-out ${
                 isMenuOpen ? "rotate-45" : ""
@@ -166,7 +143,7 @@ const NavbarClient = ({ initialSession }: NavbarClientProps) => {
 
         <div
           className={`
-            w-full md:hidden overflow-hidden transition-all duration-300 ease-in-out
+            w-full md:hidden absolute top-24 left-0 overflow-hidden transition-all duration-300 ease-in-out z-40
             ${
               isMenuOpen
                 ? "max-h-[1000px] opacity-100 visible"
@@ -174,7 +151,7 @@ const NavbarClient = ({ initialSession }: NavbarClientProps) => {
             }
           `}
         >
-          <div className="flex flex-col items-center py-4 space-y-4">
+          <div className="flex flex-col items-center py-4 space-y-4 bg-background">
             {session && (
               <div className="flex flex-col items-center mb-4">
                 <Avatar className="w-16 h-16 mb-2">
