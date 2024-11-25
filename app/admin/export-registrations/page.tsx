@@ -1,4 +1,5 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { DownloadButton } from "@/components/DownloadCSVButton";
 import prisma from "@/lib/client";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
@@ -34,7 +35,7 @@ const CSVDownload = async () => {
     },
   });
   return (
-    <div className="flex flex-col w-full p-10 text-primary">
+    <div className="flex flex-col w-full p-10 text-primary h-screen">
       <div className="grid grid-cols-3 max-w-full gap-4">
         {events.map((event) => {
           return (
@@ -49,8 +50,8 @@ const CSVDownload = async () => {
                 </p>
               </div>
               {event._count.registrations > 0 && (
-                // <DownloadButton event={event} />
-                <h1>Download</h1>
+                <DownloadButton event={event} />
+                // <h1>Download</h1>
               )}
             </div>
           );
