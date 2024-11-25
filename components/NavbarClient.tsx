@@ -54,28 +54,30 @@ const NavbarClient = ({ initialSession }: NavbarClientProps) => {
   };
 
   return (
-    <nav
-      className={` w-full z-50 transition-all duration-300 border-b border-purple-700`}
-    >
+    <nav className="w-full z-50 transition-all duration-300 border-b border-purple-700">
       <div className="container mx-auto h-full flex flex-col md:flex-row items-center justify-between px-4 max-w-screen-xl">
         <div className="w-full flex items-center justify-between h-24">
-          <Link href="/" className="flex items-center">
-            <Image
-              src={MVJLogo}
-              alt="MVJ Logo"
-              width={80}
-              height={50}
-              className="object-contain"
-              priority
-            />
-            <Image
-              src={Logo}
-              alt="Logo"
-              width={100}
-              height={50}
-              className="object-contain ml-4"
-              priority
-            />
+          <Link href="/" className="flex items-center flex-shrink-0">
+            <div className="w-[80px] h-[50px] relative">
+              <Image
+                src={MVJLogo}
+                alt="MVJ Logo"
+                className="object-contain"
+                fill
+                sizes="80px"
+                priority
+              />
+            </div>
+            <div className="w-[100px] h-[50px] relative ml-4">
+              <Image
+                src={Logo}
+                alt="Logo"
+                className="object-contain"
+                fill
+                sizes="100px"
+                priority
+              />
+            </div>
           </Link>
 
           <div className="hidden md:flex items-center gap-10 md:mr-20">
@@ -83,24 +85,24 @@ const NavbarClient = ({ initialSession }: NavbarClientProps) => {
               <Link
                 key={link.name}
                 href={link.href}
-                className="text-md hover:text-primary transition"
+                className="text-base font-medium hover:text-primary transition whitespace-nowrap"
               >
                 {link.name}
               </Link>
             ))}
           </div>
 
-          <div className="hidden md:flex items-center">
+          <div className="hidden md:flex items-center flex-shrink-0">
             {session ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Avatar className="cursor-pointer hover:ring-2 hover:ring-primary transition-all w-10 h-10">
+                  <Avatar className="cursor-pointer hover:ring-2 hover:ring-primary transition-all w-10 h-10 flex-shrink-0">
                     <AvatarImage
                       src={session.user?.image || undefined}
                       referrerPolicy="no-referrer"
                       alt={session.user?.name || "User Avatar"}
                     />
-                    <AvatarFallback>
+                    <AvatarFallback className="text-sm">
                       {getInitials(session.user?.name)}
                     </AvatarFallback>
                   </Avatar>
@@ -108,7 +110,9 @@ const NavbarClient = ({ initialSession }: NavbarClientProps) => {
                 <DropdownMenuContent className="w-56">
                   <DropdownMenuLabel>
                     <div className="flex flex-col">
-                      <span className="font-medium">{session.user?.name}</span>
+                      <span className="font-medium text-sm">
+                        {session.user?.name}
+                      </span>
                       <span className="text-xs text-muted-foreground">
                         {session.user?.email}
                       </span>
@@ -122,7 +126,7 @@ const NavbarClient = ({ initialSession }: NavbarClientProps) => {
               </DropdownMenu>
             ) : (
               <Button
-                className="bg-primary hover:bg-secondary"
+                className="bg-primary hover:bg-secondary whitespace-nowrap text-base"
                 onClick={() => signIn("google")}
               >
                 Register Now!
@@ -130,7 +134,7 @@ const NavbarClient = ({ initialSession }: NavbarClientProps) => {
             )}
           </div>
 
-          <div className="md:hidden flex items-center">
+          <div className="md:hidden flex items-center flex-shrink-0">
             <button
               className={`text-2xl transition-transform duration-300 ease-in-out ${
                 isMenuOpen ? "rotate-45" : ""
@@ -166,7 +170,9 @@ const NavbarClient = ({ initialSession }: NavbarClientProps) => {
                     {getInitials(session.user?.name)}
                   </AvatarFallback>
                 </Avatar>
-                <span className="font-medium">{session.user?.name}</span>
+                <span className="font-medium text-base">
+                  {session.user?.name}
+                </span>
                 <span className="text-sm text-muted-foreground">
                   {session.user?.email}
                 </span>
@@ -177,7 +183,7 @@ const NavbarClient = ({ initialSession }: NavbarClientProps) => {
               <Link
                 key={link.name}
                 href={link.href}
-                className="py-2 text-lg hover:text-primary transition w-full text-center"
+                className="py-2 text-base font-medium hover:text-primary transition w-full text-center"
                 onClick={() => setIsMenuOpen(false)}
               >
                 {link.name}
@@ -187,7 +193,7 @@ const NavbarClient = ({ initialSession }: NavbarClientProps) => {
             {session ? (
               <Button
                 variant="destructive"
-                className="mt-4 w-full"
+                className="mt-4 w-full text-base"
                 onClick={() => {
                   signOut();
                   setIsMenuOpen(false);
@@ -197,7 +203,7 @@ const NavbarClient = ({ initialSession }: NavbarClientProps) => {
               </Button>
             ) : (
               <Button
-                className="bg-primary mt-4 w-full hover:bg-secondary"
+                className="bg-primary mt-4 w-full hover:bg-secondary text-base"
                 onClick={() => signIn("google")}
               >
                 Register Now!
