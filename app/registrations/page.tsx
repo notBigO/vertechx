@@ -1,5 +1,5 @@
 import React from "react";
-import prisma from "@/lib/client"; // Adjust import based on your prisma setup
+import prisma from "@/lib/client";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import Link from "next/link";
@@ -15,11 +15,11 @@ const getRegisteredEvents = async (userId: string) => {
       userId: userId,
     },
     include: {
-      event: true, // Include event details
+      event: true,
     },
   });
 
-  return registrations; // Return the full registration data including event
+  return registrations;
 };
 
 const MyRegistrations = async () => {
@@ -27,6 +27,19 @@ const MyRegistrations = async () => {
 
   try {
     const session = await getServerSession(authOptions);
+    if (!session) {
+      return (
+        <div className="h-screen flex flex-col items-center justify-center text-center px-4">
+          <div className="max-w-md">
+            <h1 className="text-4xl font-bold mb-6 text-primary">Yikes!</h1>
+            <p className="text-xl mb-8 text-white">
+              Looks like you're not logged in. Please log in to view your
+              registrations!
+            </p>
+          </div>
+        </div>
+      );
+    }
     if (session?.user?.id) {
       registeredEvents = await getRegisteredEvents(session.user.id);
     }
