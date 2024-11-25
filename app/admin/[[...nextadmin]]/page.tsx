@@ -7,6 +7,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import ViewScreenshotButton from "@/components/ViewScreenshotButton";
 
 export const options = {
   basePath: "/admin",
@@ -86,13 +87,13 @@ export const options = {
           direction: "desc",
         },
       },
-      //   edit: {
-      //     fields: {
-      //       screenshotUrl: {
-      //         input: <ViewScreenshotButton />,
-      //       },
+      // edit: {
+      //   fields: {
+      //     screenshotUrl: {
+      //       input: <ViewScreenshotButton />,
       //     },
       //   },
+      // },
     },
   },
   pages: {

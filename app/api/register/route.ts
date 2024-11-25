@@ -1,14 +1,19 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/client";
-import { v2 as cloudinary } from "cloudinary";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
+const S3 = new S3Client({
+  region: "auto",
+  endpoint: `https://${process.env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,
+  credentials: {
+    accessKeyId: process.env.R2_ACCESS_KEY_ID,
+    secretAccessKey: process.env.R2_SECRET_ACCESS_KEY,
+  },
 });
+
+const BUCKET_NAME = process.env.R2_BUCKET_NAME;
 
 export async function POST(req) {
   try {
@@ -68,13 +73,23 @@ export async function POST(req) {
       );
     }
 
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-    const fileBase64 = `data:${file.type};base64,${buffer.toString("base64")}`;
+    const fileExtension = file.type.split("/")[1];
+    const fileName = `payment_screenshots/${Date.now()}-${Math.random()
+      .toString(36)
+      .substring(7)}.${fileExtension}`;
 
-    const uploadResponse = await cloudinary.uploader.upload(fileBase64, {
-      folder: "payment_screenshots",
+    const bytes = await file.arrayBuffer();
+    const uploadCommand = new PutObjectCommand({
+      Bucket: BUCKET_NAME,
+      Key: fileName,
+      Body: Buffer.from(bytes),
+      ACL: "public-read",
+      ContentType: file.type,
     });
+
+    await S3.send(uploadCommand);
+
+    const screenshotUrl = `${process.env.R2_PUBLIC_BUCKET_URL}/${fileName}`;
 
     let participants = [];
     if (event.isGroup && participantsJson) {
@@ -101,7 +116,7 @@ export async function POST(req) {
         noOfParticipants: event.isGroup ? participants.length : 1,
         paymentAmount: event.registrationFee,
         paymentId: utrNumber,
-        screenshotUrl: uploadResponse.secure_url,
+        screenshotUrl,
         event: {
           connect: { id: event.id },
         },
