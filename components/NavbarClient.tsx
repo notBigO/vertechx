@@ -78,12 +78,12 @@ const NavbarClient = ({ initialSession }: NavbarClientProps) => {
             />
           </Link>
 
-          <div className="hidden md:flex items-center gap-10">
+          <div className="hidden md:flex items-center gap-10 md:mr-20">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
                 href={link.href}
-                className="text-sm hover:text-primary transition"
+                className="text-md hover:text-primary transition"
               >
                 {link.name}
               </Link>

@@ -28,6 +28,7 @@ const EventRegistrationForm = ({ event, session, qr }: { event: Event }) => {
   const [status, setStatus] = useState("");
   const [fileName, setFileName] = useState("");
   const [participantError, setParticipantError] = useState("");
+  const [isloading, setIsloading] = useState(false);
 
   // Account for registrant in participant counts
   const maxAdditionalMembers = Math.max(0, (event.maxParticipants || 1) - 1);
@@ -101,6 +102,7 @@ const EventRegistrationForm = ({ event, session, qr }: { event: Event }) => {
     }
 
     setStatus("loading");
+    setIsloading(true);
 
     try {
       const formData = new FormData();
@@ -143,9 +145,11 @@ const EventRegistrationForm = ({ event, session, qr }: { event: Event }) => {
 
       const result = await response.json();
       window.location.href = `/ticket/${result.registrationId}`;
+      setIsloading(false);
     } catch (error) {
       console.error("Registration error:", error);
       setStatus("error");
+      setIsloading(false);
     }
   };
 
@@ -511,10 +515,7 @@ const EventRegistrationForm = ({ event, session, qr }: { event: Event }) => {
                   <Button
                     type="submit"
                     className="w-full bg-primary hover:bg-secondary"
-                    // disabled={
-                    //   status === "loading" ||
-                    //   (event.isGroup && !!participantError)
-                    // }
+                    disabled={isloading}
                   >
                     {status === "loading" ? (
                       <>
