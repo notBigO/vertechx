@@ -102,7 +102,7 @@ const EventsPage = async ({ searchParams }: { searchParams: any }) => {
       <Suspense fallback={<div>Loading events...</div>}>
         <div className="w-full px-4 py-7 flex items-center">
           <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {eventsData.length > 0 ? (
                 eventsData.map((event) => (
                   <EventCard key={event.id} eventData={event} />

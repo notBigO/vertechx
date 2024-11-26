@@ -14,7 +14,7 @@ const EventCard = ({ eventData }: { eventData: Event }) => {
 
   return (
     <Link
-      className="bg-whit rounded-xl overflow-hidden shadow-md w-72 flex flex-col transition-transform duration-200 hover:scale-105 hover:shadow-lg"
+      className="rounded-xl overflow-hidden shadow-md w-72 flex flex-col transition-transform duration-200 hover:scale-105 hover:shadow-lg"
       href={`/events/${eventData.slug}`}
     >
       <div className="w-full relative aspect-square">
