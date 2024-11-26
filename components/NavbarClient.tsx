@@ -54,7 +54,7 @@ const NavbarClient = ({ initialSession }: NavbarClientProps) => {
   };
 
   return (
-    <nav className="w-full z-50 transition-all duration-300 border-b border-purple-700">
+    <nav className="w-full z-50 transition-all duration-300 border-b border-gray-600">
       <div className="container mx-auto h-full flex flex-col md:flex-row items-center justify-between px-4 max-w-screen-xl">
         <div className="w-full flex items-center justify-between h-24">
           <Link href="/" className="flex items-center flex-shrink-0">

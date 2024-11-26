@@ -30,7 +30,6 @@ const EventRegistrationForm = ({ event, session, qr }: { event: Event }) => {
   const [participantError, setParticipantError] = useState("");
   const [isloading, setIsloading] = useState(false);
 
-  // Account for registrant in participant counts
   const maxAdditionalMembers = Math.max(0, (event.maxParticipants || 1) - 1);
   const minAdditionalMembers = Math.max(0, (event.minParticipants || 1) - 1);
 
@@ -154,7 +153,7 @@ const EventRegistrationForm = ({ event, session, qr }: { event: Event }) => {
   };
 
   return (
-    <div className="min-h-screen bg-dark">
+    <div className="min-h-screen">
       <div className="container mx-auto px-4 py-12 max-w-5xl">
         <Card className="shadow-lg">
           <CardHeader className="space-y-1">
@@ -162,7 +161,8 @@ const EventRegistrationForm = ({ event, session, qr }: { event: Event }) => {
               Event Registration
             </CardTitle>
             <CardDescription>
-              Complete the form below to register for {event.title}
+              Complete the form below to register for{" "}
+              <span className="text-primary font-bold">{event.title}</span>
             </CardDescription>
           </CardHeader>
           <CardContent>
