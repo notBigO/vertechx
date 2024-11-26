@@ -55,7 +55,7 @@ const Hero = memo(function CyberpunkHero() {
           <p
             className={`text-lg md:text-5xl md:mt-14 font-bold ${display.className}  relative`}
           >
-            LAUNCH DAY - 19th November, 2024
+            LAUNCH DAY - 27th November, 2024
           </p>
           <div className="absolute -left-6 top-0 h-full w-[2px] bg-[#7c09ff] opacity-50" />
           <div className="absolute -right-6 top-0 h-full w-[2px] bg-[#7c09ff] opacity-50" />
