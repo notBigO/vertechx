@@ -203,12 +203,12 @@ const EventDetails = ({ eventData }: { eventData: any }) => (
         Event Rules
       </h1>
       <p className="text-lg mt-5 text-wrap whitespace-pre">{eventData.rules}</p>
-      <h1 className={`text-5xl mt-4 ${space.className} text-primary mt-6`}>
+      {/* <h1 className={`text-5xl mt-4 ${space.className} text-primary mt-6`}>
         Judging Criteria
       </h1>
       <p className="text-lg mt-5 text-wrap whitespace-pre">
         {eventData.judgingCriteria}
-      </p>
+      </p> */}
 
       {eventData.eventCoordinatorInfo && (
         <>
