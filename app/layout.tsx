@@ -36,11 +36,11 @@ export default async function RootLayout({
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>VertechX 2024</title>
-        {/* <link rel="icon" href={Logo.src} type="image/x-icon" sizes="any" />
+        <link rel="icon" href={Logo.src} type="image/x-icon" sizes="any" />
         <link rel="icon" href={Logo.src} type="image/png" sizes="32x32" />
         <link rel="icon" href={Logo.src} type="image/png" sizes="16x16" />
         <link rel="apple-touch-icon" href={Logo.src} sizes="180x180" />
-        <link rel="shortcut icon" href={Logo.src} type="image/x-icon" /> */}
+        <link rel="shortcut icon" href={Logo.src} type="image/x-icon" />
       </head>
       <body
         className={`${GeistSans.className} antialiased bg-background text-white`}
