@@ -108,7 +108,7 @@ const EventsPage = async ({ searchParams }: { searchParams: any }) => {
                   <EventCard key={event.id} eventData={event} />
                 ))
               ) : (
-                <div className="col-span-full text-center text-xl text-gray-500">
+                <div className="col-span-full h-screen text-center text-xl text-gray-500">
                   No events found
                 </div>
               )}
