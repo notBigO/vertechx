@@ -42,6 +42,7 @@
     "react-qr-code": "^2.0.15",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
+    "upiqr": "^1.2.2",
     "vertechx": "file:",
     "zod": "^3.23.8"
   },

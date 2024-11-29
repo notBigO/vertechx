@@ -6,10 +6,8 @@ import { Frown, PartyPopper, Repeat2 } from "lucide-react";
 import { getServerSession } from "next-auth";
 import { unstable_cache } from "next/cache";
 import Link from "next/link";
+import upiqr from 'upiqr';
 
-const mockQr = {
-  qr: "https://example.com/qr-code.png",
-};
 
 const getEventData = unstable_cache(
   async (slug: string) => {
@@ -46,17 +44,23 @@ const getEventData = unstable_cache(
       console.error("Error fetching event:", error);
       throw new Error("Failed to fetch event data");
     }
+  },
+  ["event-data"],
+  {
+    revalidate: 60,
+    tags: ["event-data"],
   }
-  // ["event-data"],
-  // {
-  //   revalidate: 60,
-  //   tags: ["event-data"],
-  // }
 );
 
 const RegistrationPage = async ({ params }: { params: any }) => {
   const session = await getServerSession(authOptions);
   const event = await getEventData(params.id);
+
+  const qr = await upiqr({
+    payeeVPA: 'EzE0046709@CUB',
+    payeeName: 'THE PRINCIPAL MVJ COLLEGE',
+    amount: event?.registrationFee,
+  })
 
   if (!session) {
     return (
@@ -118,7 +122,7 @@ const RegistrationPage = async ({ params }: { params: any }) => {
 
   return (
     <div>
-      <EventRegistrationForm event={event} session={session} qr={mockQr} />
+      <EventRegistrationForm event={event} session={session} qr={qr} />
     </div>
   );
 };
