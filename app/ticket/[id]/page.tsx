@@ -51,7 +51,7 @@ export default async function TicketPage({
         </Suspense>
 
         <p className="text-xs text-gray-400 dark:text-gray-500 mt-4">
-          Having issues? Contact support at support@example.com
+          Having issues? Contact support at contactmvjce@gmail.com
         </p>
       </div>
     </div>

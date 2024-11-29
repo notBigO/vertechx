@@ -113,7 +113,7 @@ export default function Ticket({
           <div className="p-4 sm:p-6 flex flex-col items-center justify-center min-w-[200px] sm:min-w-[240px]">
             <div className="p-2 sm:p-3 rounded-lg shadow-sm mb-4">
               <QRCode
-                value={`${process.env.NEXT_PUBLIC_APP_URL}/admin/registrations/${registration.id}`}
+                value={`https://vertechx.mvjce.edu.in/admin/registrations/${registration.id}`}
                 size={120}
                 className="w-[100px] h-[100px] sm:w-[140px] sm:h-[140px]"
               />

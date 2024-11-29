@@ -144,10 +144,12 @@ const EventRegistrationForm = ({ event, session, qr }: { event: Event }) => {
 
       const result = await response.json();
       window.location.href = `/ticket/${result.registrationId}`;
-      setIsloading(false);
+     
     } catch (error) {
       console.error("Registration error:", error);
       setStatus("error");
+      
+    } finally {
       setIsloading(false);
     }
   };
