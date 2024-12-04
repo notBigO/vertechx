@@ -30,7 +30,7 @@ const Footer = () => {
               <FaTwitter />
             </Link> */}
             <Link
-              href="https://https://www.instagram.com/vertechx?igsh=NTdpZTZ0amNmMHR4.com"
+              href="https://www.instagram.com/vertechx?igsh=NTdpZTZ0amNmMHR4.com"
               aria-label="Instagram"
             >
               <FaInstagram />
