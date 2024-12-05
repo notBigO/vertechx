@@ -9,6 +9,7 @@ import AuthProvider from "@/components/AuthProvider";
 
 import NavbarServer from "@/components/NavbarServer";
 import { Metadata } from "next";
+import MegaEventNavbar from "@/components/MegaNavbar";
 
 export const display = localFont({
   src: "../assets/fonts/Thunder-VF.ttf",

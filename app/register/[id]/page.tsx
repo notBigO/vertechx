@@ -1,13 +1,13 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import EventRegistrationForm from "@/components/EventRegistrationForm";
+import OAuthButton from "@/components/OAuthButton";
 import { Button } from "@/components/ui/button";
 import prisma from "@/lib/client";
 import { Frown, PartyPopper, Repeat2 } from "lucide-react";
 import { getServerSession } from "next-auth";
 import { unstable_cache } from "next/cache";
 import Link from "next/link";
-import upiqr from 'upiqr';
-
+import upiqr from "upiqr";
 
 const getEventData = unstable_cache(
   async (slug: string) => {
@@ -57,10 +57,10 @@ const RegistrationPage = async ({ params }: { params: any }) => {
   const event = await getEventData(params.id);
 
   const qr = await upiqr({
-    payeeVPA: 'EzE0046709@CUB',
-    payeeName: 'THE PRINCIPAL MVJ COLLEGE',
+    payeeVPA: "EzE0046709@CUB",
+    payeeName: "THE PRINCIPAL MVJ COLLEGE",
     amount: event?.registrationFee,
-  })
+  });
 
   if (!session) {
     return (
@@ -71,6 +71,7 @@ const RegistrationPage = async ({ params }: { params: any }) => {
             Looks like you're not logged in. Please log in to register for this
             event.
           </p>
+          <OAuthButton />
         </div>
       </div>
     );

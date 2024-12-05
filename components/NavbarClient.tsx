@@ -54,7 +54,7 @@ const NavbarClient = ({ initialSession }: NavbarClientProps) => {
   };
 
   return (
-    <nav className="w-full z-50 transition-all duration-300 border-b border-gray-600">
+    <nav className="w-full z-50 transition-all duration-300  bg-black">
       <div className="container mx-auto h-full flex flex-col md:flex-row items-center justify-between px-4 max-w-screen-xl">
         <div className="w-full flex items-center justify-between h-24">
           <Link href="/" className="flex items-center flex-shrink-0">
@@ -129,7 +129,7 @@ const NavbarClient = ({ initialSession }: NavbarClientProps) => {
                 className="bg-primary hover:bg-secondary whitespace-nowrap text-base"
                 onClick={() => signIn("google")}
               >
-                Register Now!
+                Login to Register
               </Button>
             )}
           </div>
@@ -206,7 +206,7 @@ const NavbarClient = ({ initialSession }: NavbarClientProps) => {
                 className="bg-primary mt-4 w-full hover:bg-secondary text-base"
                 onClick={() => signIn("google")}
               >
-                Register Now!
+                Login to Register
               </Button>
             )}
           </div>

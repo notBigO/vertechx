@@ -2,7 +2,7 @@ export const navLinks = [
   { name: "Home", href: "/" },
   // { name: "About", href: "/about" },
   { name: "Events", href: "/events" },
-  { name: "Registrations", href: "/registrations" },
+  { name: "My Registrations", href: "/registrations" },
 ];
 
 export const categories = [

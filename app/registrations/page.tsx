@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
+import OAuthButton from "@/components/OAuthButton";
 
 const getRegisteredEvents = async (userId: string) => {
   if (!userId) return [];
@@ -36,6 +37,7 @@ const MyRegistrations = async () => {
               Looks like you're not logged in. Please log in to view your
               registrations!
             </p>
+            <OAuthButton />
           </div>
         </div>
       );
