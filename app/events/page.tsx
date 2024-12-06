@@ -6,6 +6,10 @@ import EventCard from "@/components/EventCard";
 import prisma from "@/lib/client";
 import { unstable_cache } from "next/cache";
 import { Event } from "@prisma/client";
+import ShineBorder from "@/components/ui/shine-border";
+import MegaEventDisplay from "@/components/hackathon/MegaEventDisplay";
+import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 const categories = [
   "All Events",
@@ -63,11 +67,48 @@ const EventsPage = async ({ searchParams }: { searchParams: any }) => {
 
   return (
     <div
-      className={`${space.className} flex flex-col h-full w-full items-center mt-16 text-4xl text-primary`}
+      className={` flex flex-col h-full w-full items-center mt-16 text-4xl text-primary`}
     >
       <h1>Explore Events</h1>
 
-      <div className="w-full mt-10">
+      <div className="w-full px-2 lg:px-0">
+        <ShineBorder
+          className="relative bg-black p-10 text-white gap-3 overflow-hidden shadow-lg w-full max-w-7xl mx-auto flex flex-col items-start mt-10"
+          color={["#7c09ff", "#c04cff", "#FFBE7B"]}
+        >
+          <h1 className={`${space.className} text- text-primary`}>
+            Looking for the Mega Event?
+          </h1>
+          <h1 className="text-sm">
+            Bring your team mates along and take on the challenge!
+          </h1>
+
+          <div className="flex flex-col md:flex-row items-center gap-10 w-full">
+            <Image
+              src="https://pub-ad7b9dfb5d1942639c6f3b5196e947c8.r2.dev/hackathon.png"
+              width={200}
+              height={200}
+              alt="megaevent"
+              className="mt-10"
+            />
+            <div className="flex flex-col justify-start">
+              <h1 className={`${space.className}  text-primary font-bold`}>
+                8-Hour Software Hackathon
+              </h1>
+              <h1 className="text-sm">
+                19th December, 2024 | MVJ College of Engineering
+              </h1>
+              <Button className="bg-primary hover:bg-secondary mt-5">
+                <Link href={"/hackathon"} className="text-white">
+                  Learn More
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </ShineBorder>
+      </div>
+
+      <div className={`w-full mt-10 ${space.className}`}>
         <div className="max-w-7xl mx-auto px-4">
           <div className="w-full xl:flex md:items-center md:justify-center overflow-x-auto no-scrollbar">
             <div className="flex gap-2 min-w-max pb-4">
