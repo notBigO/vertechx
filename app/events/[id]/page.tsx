@@ -8,6 +8,7 @@ import RegisterButton from "@/components/RegisterButton";
 import { notFound } from "next/navigation";
 import { unstable_cache } from "next/cache";
 import { Suspense } from "react";
+import { Event } from "@prisma/client";
 
 const getEventData = unstable_cache(
   async (slug: string) => {
@@ -21,6 +22,7 @@ const getEventData = unstable_cache(
           poster_url: true,
           category: true,
           time: true,
+          date: true,
           venue: true,
           firstPrize: true,
           secondPrize: true,
@@ -153,10 +155,9 @@ const EventDetails = ({ eventData }: { eventData: any }) => (
               {eventData.category}
               <span className="text-gray-300 text-md">
                 {" | "}
-                {new Date().toLocaleDateString("en", {
-                  day: "numeric",
+                {new Date(eventData.date).toLocaleDateString("en", {
                   month: "long",
-                  year: "numeric",
+                  day: "numeric",
                   timeZone: "Asia/Kolkata",
                 })}{" "}
                 - {eventData.time}
