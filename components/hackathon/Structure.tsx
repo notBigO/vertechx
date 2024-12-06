@@ -45,9 +45,10 @@ const Structure = () => {
               Theme Based
             </h3>
             <p className="mt-5 text-base text-gray-600 font-pj">
-              The theme will be disclosed at the venue on 19th at 8:00 AM. After
-              the announcement, participants will have a brief brainstorming
-              session to plan their approach.
+              The theme will be disclosed at the venue on{" "}
+              <strong>19th at 8:00 AM</strong>. After the announcement,
+              participants will have a brief brainstorming session to plan their
+              approach.
             </p>
           </div>
 
@@ -89,8 +90,8 @@ const Structure = () => {
               Stages
             </h3>
             <p className="mt-5 text-base text-gray-600 font-pj">
-              The hackathon will be divided into 3 stages. Each stage will
-              consist of an agenda to be met. More on that below.
+              The hackathon will be divided into <strong>3 stages</strong>. Each
+              stage will consist of an agenda to be met.
             </p>
           </div>
 
@@ -141,9 +142,10 @@ const Structure = () => {
               Presentation & Judging
             </h3>
             <p className="mt-5 text-base text-gray-600 font-pj">
-              Each team will present their solution to the judging panel at 4:30
-              PM. Teams are allotted 5 minutes for presentation, followed by a
-              5-minute Q&A session with the judges.
+              Each team will present their solution to the judging panel at{" "}
+              <strong>4:30 PM</strong>. Teams are allotted{" "}
+              <strong>5 minutes for presentation</strong>, followed by a
+              <strong>5-minute Q&A session</strong> with the judges.
             </p>
           </div>
 
@@ -308,7 +310,9 @@ const Structure = () => {
               Venue and Date
             </h3>
             <p className="mt-5 text-base text-gray-600 font-pj">
-              Auditorium backstage and corridor. 19th, starting at 8:00 AM
+              <strong>
+                Auditorium backstage and corridor. 19th, starting at 8:00 AM
+              </strong>
             </p>
           </div>
         </div>
