@@ -3,6 +3,16 @@ import { TbMapPinFilled } from "react-icons/tb";
 
 const contactData = [
   {
+    title: "Chief Coordinators",
+    contacts: [
+      { name: "Kiran Choudhari", phone: "+917411971510" },
+      {
+        name: "Ganesh Krishna",
+        phone: "+918050740534",
+      },
+    ],
+  },
+  {
     title: "Core Team Handling",
     contacts: [
       { name: "Joel Thomas", phone: "+918310819628" },
