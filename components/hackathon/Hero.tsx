@@ -40,7 +40,7 @@ const Hero = () => {
             </span>
             <br />
             <span className="text-4xl md:text-6xl text-white">
-              8 Hour Hackathon
+              8-Hour Software Hackathon
             </span>
           </motion.h1>
 
@@ -61,7 +61,7 @@ const Hero = () => {
             transition={{ delay: 0.6, duration: 0.6 }}
           >
             <Link
-              href="#"
+              href="/register/hackathon"
               className="inline-flex items-center px-8 py-4 bg-primary text-white font-bold rounded-lg 
               hover:bg-secondary transition-all duration-300 
               hover:scale-105 hover:shadow-lg hover:shadow-primary/50"

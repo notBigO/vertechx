@@ -29,9 +29,12 @@ const getEventsData = unstable_cache(
   async (selectedCategory: string) => {
     return await prisma.event.findMany({
       where: {
-        category:
+        category: {
+          not: "Mega Event",
+        },
+        AND:
           selectedCategory !== "All Events"
-            ? { equals: selectedCategory }
+            ? { category: { equals: selectedCategory } }
             : undefined,
       },
     });
@@ -54,7 +57,7 @@ const EventsPage = async ({ searchParams }: { searchParams: any }) => {
 
     eventsData.sort((a, b) => {
       if (a.category === "Mega Event" && b.category !== "Mega Event") {
-        return -1;
+        return 0;
       } else if (a.category !== "Mega Event" && b.category === "Mega Event") {
         return 1;
       } else {
@@ -98,11 +101,11 @@ const EventsPage = async ({ searchParams }: { searchParams: any }) => {
               <h1 className="text-sm">
                 19th December, 2024 | MVJ College of Engineering
               </h1>
-              <Button className="bg-primary hover:bg-secondary mt-5">
-                <Link href={"/hackathon"} className="text-white">
+              <Link href={"/hackathon"} className="text-white">
+                <Button className="bg-primary hover:bg-secondary mt-5 w-full">
                   Learn More
-                </Link>
-              </Button>
+                </Button>
+              </Link>
             </div>
           </div>
         </ShineBorder>

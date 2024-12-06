@@ -1,10 +1,43 @@
 "use client";
 
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+import { motion, useInView } from "framer-motion";
 
 const Faq = () => {
   const [faq, setFaq] = useState([
+    {
+      question: "Rules and Regulations",
+      answer: `
+        <ul class="list-disc pl-5">
+          <li><strong>Theme:</strong> Adherence to the theme announced on the day of the hackathon is mandatory.</li>
+          <li><strong>Time Management:</strong> Development must be completed within the 8-hour limit.</li>
+          <li><strong>Originality:</strong> Only original work developed during the event is acceptable.</li>
+          <li><strong>Resources:</strong> 
+            <ul class="list-disc pl-5">
+              <li>Any programming language or tools can be used</li>
+              <li>Internet access is provided</li>
+              <li>Participants must bring their own devices</li>
+            </ul>
+          </li>
+          <li><strong>Conduct:</strong> Professionalism and respect are expected towards everyone at the event.</li>
+          <li><strong>Submission:</strong> 
+            <ul class="list-disc pl-5">
+              <li>Final submissions must be uploaded to GitHub by the end of the 8-hour period</li>
+              <li>Hourly pushes are required</li>
+              <li>Late submissions will not be accepted</li>
+            </ul>
+          </li>
+          <li><strong>Judges' Decision:</strong> 
+            <ul class="list-disc pl-5">
+              <li>The judges' decision is final</li>
+              <li>Any disputes must be reported to the event coordinator within 30 minutes after the results</li>
+            </ul>
+          </li>
+        </ul>
+      `,
+      open: false,
+    },
     {
       question: "What are the cash prizes?",
       answer: `
@@ -129,6 +162,10 @@ const Faq = () => {
       open: false,
     },
   ]);
+
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, amount: 0.1 });
+
   const toggleFaq = (index) => {
     setFaq(
       faq.map((item, i) => {
@@ -143,19 +180,56 @@ const Faq = () => {
     );
   };
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        delayChildren: 0.2,
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: {
+      opacity: 0,
+      y: 50,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut",
+      },
+    },
+  };
+
   return (
-    <section className="py-10 bg-gray-50 sm:py-16 lg:py-24">
+    <section ref={ref} className="py-10 bg-gray-50 sm:py-16 lg:py-24">
       <div className="px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">
-        <div className="max-w-2xl mx-auto text-center">
+        <motion.div
+          initial={{ opacity: 0, y: -50 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: -50 }}
+          transition={{ duration: 0.6 }}
+          className="max-w-2xl mx-auto text-center"
+        >
           <h2 className="text-3xl font-bold leading-tight text-primary sm:text-4xl lg:text-5xl">
             Frequently Asked Questions
           </h2>
-        </div>
+        </motion.div>
 
-        <div className="max-w-3xl mx-auto mt-8 space-y-4 md:mt-16">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+          className="max-w-3xl mx-auto mt-8 space-y-4 md:mt-16"
+        >
           {faq.map((item, index) => (
-            <div
+            <motion.div
               key={index}
+              variants={itemVariants}
               className="transition-all duration-200 bg-white border border-gray-200 cursor-pointer hover:bg-gray-50"
             >
               <button
@@ -201,16 +275,21 @@ const Faq = () => {
                   dangerouslySetInnerHTML={{ __html: item.answer }}
                 ></div>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
-        <p className="text-center text-gray-600 textbase mt-9">
+        <motion.p
+          initial={{ opacity: 0, y: 50 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="text-center text-gray-600 textbase mt-9"
+        >
           Didn't find the answer you are looking for?{" "}
           <Link href="/contact" className="text-primary font-bold">
             Contact Us!
           </Link>
-        </p>
+        </motion.p>
       </div>
     </section>
   );
