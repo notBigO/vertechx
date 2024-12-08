@@ -11,7 +11,7 @@ const HackathonPage = () => {
       <Hero />
       <Structure />
       <Timeline />
-      <ThemesComponent />
+      {/* <ThemesComponent /> */}
       <Faq />
     </div>
   );
