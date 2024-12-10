@@ -10,6 +10,7 @@ const HackathonPage = () => {
     <div>
       <Hero />
       <Structure />
+
       <Timeline />
       {/* <ThemesComponent /> */}
       <Faq />

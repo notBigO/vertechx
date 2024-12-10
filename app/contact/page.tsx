@@ -33,6 +33,19 @@ const contactData = [
     ],
   },
   {
+    title: "Mega Event related queries",
+    contacts: [
+      {
+        name: "Greeshma",
+        phone: "+917483494661",
+      },
+      {
+        name: "Heerath",
+        phone: "+919797243748",
+      },
+    ],
+  },
+  {
     title: "Event Related Queries",
     contacts: [
       { name: "Priya", phone: "+916360424161" },
@@ -46,6 +59,7 @@ const contactData = [
       { name: "Varun", phone: "+919980133790" },
     ],
   },
+
   {
     title: "Faculty Co-ordinator",
     contacts: [{ name: "Hameem I Shanavas", phone: "+919620659690" }],

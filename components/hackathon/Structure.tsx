@@ -271,7 +271,8 @@ const Structure = () => {
           First place gets <strong>₹25000</strong> and the second place gets{" "}
           <strong>₹15000</strong>. We do have special-mention prizes. Best idea
           gets <strong>₹5000</strong> and best implementation gets{" "}
-          <strong>₹5000</strong>
+          <strong>₹5000</strong> (prize pool may vary based on number of
+          registrations)
         </p>
       ),
       borderClass: "border-0 border-gray-200 md:border md:border-gray-200",
