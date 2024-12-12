@@ -33,7 +33,7 @@ const contactData = [
     ],
   },
   {
-    title: "Mega Event related queries",
+    title: "Hackathon related queries",
     contacts: [
       {
         name: "Greeshma",
