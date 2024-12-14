@@ -12,6 +12,7 @@ export const getRegistration = unstable_cache(
               title: true,
               date: true,
               venue: true,
+              time: true,
             },
           },
           participants: {

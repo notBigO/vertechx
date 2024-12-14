@@ -1,13 +1,7 @@
 "use client";
 
 import QRCode from "react-qr-code";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-  CardFooter,
-} from "@/components/ui/card";
+import { CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { Registration } from "@prisma/client";
 import ShineBorder from "./ui/shine-border";
@@ -25,14 +19,6 @@ export default function Ticket({
     return `${year}-${month}-${day}`;
   };
 
-  const formatTime = (date: Date) => {
-    const d = new Date(date);
-    return d.toLocaleTimeString("en-US", {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true,
-    });
-  };
   console.log("Registration: ", registration);
   return (
     <div className="w-full p-2 sm:p-4 max-w-3xl mx-auto">
@@ -75,7 +61,7 @@ export default function Ticket({
               <div className="space-y-1">
                 <p className="text-xs text-primary">Time</p>
                 <p className="text-xs sm:text-sm text-white">
-                  {formatTime(registration.event.date)}
+                  {registration.event.time}
                 </p>
               </div>
               <div className="space-y-1">
