@@ -144,11 +144,9 @@ const EventRegistrationForm = ({ event, session, qr }: { event: Event }) => {
 
       const result = await response.json();
       window.location.href = `/ticket/${result.registrationId}`;
-     
     } catch (error) {
       console.error("Registration error:", error);
       setStatus("error");
-      
     } finally {
       setIsloading(false);
     }
@@ -271,7 +269,8 @@ const EventRegistrationForm = ({ event, session, qr }: { event: Event }) => {
                     <div className="space-y-6">
                       <div className="flex items-center justify-between">
                         <h2 className="text-xl font-semibold text-gray-900">
-                          Additional Team Members
+                          Additional Team Members (Excluding yourself. You're a
+                          participant by default)
                         </h2>
                         <span className="text-sm text-gray-500">
                           Add {minAdditionalMembers}-{maxAdditionalMembers} more
