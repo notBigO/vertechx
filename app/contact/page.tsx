@@ -55,8 +55,8 @@ const contactData = [
   {
     title: "Website Support",
     contacts: [
-      { name: "Siva", phone: "+919741319192" },
       { name: "Varun", phone: "+919980133790" },
+      { name: "Joel Thomas", phone: "+918310819628" },
     ],
   },
 
