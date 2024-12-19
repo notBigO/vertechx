@@ -27,7 +27,7 @@ const AboutSection = () => {
               <div className="relative rounded-lg overflow-hidden w-full pb-[42.85%]">
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent pointer-events-none z-10" />
                 <video
-                  src="https://res.cloudinary.com/dqddav9jj/video/upload/v1731608885/videos/vxynmjipei0dsnrng0of.mp4"
+                  src="https://pub-ad7b9dfb5d1942639c6f3b5196e947c8.r2.dev/teaser.mp4"
                   autoPlay
                   muted
                   playsInline

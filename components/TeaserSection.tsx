@@ -34,7 +34,7 @@ const TeaserSection = () => {
                 className="absolute inset-0 w-full h-full object-cover"
               >
                 <source
-                  src="https://res.cloudinary.com/dqddav9jj/video/upload/v1731606505/videos/egtaeqdorgqt6lbxldsl.mp4"
+                  src="https://pub-ad7b9dfb5d1942639c6f3b5196e947c8.r2.dev/glimpse.mp4"
                   type="video/mp4"
                 />
               </video>
